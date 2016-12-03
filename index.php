@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>KIV/WEB - semestrální práce</title>
+    <title>Konference</title>
     <meta name="description" content="Semestrální práce z předmětu KIV/WEB">
     <meta name="author" content="Zdenek Vales">
   
@@ -22,11 +22,70 @@
 </head>
 
 <body>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="ui/js/scripts.js"></script>
 	<script src="ui/bootstrap/js/bootstrap.min.js"></script>
-    <h1>Semestrální práce z KIV/WEB</h1>
-    
-    <p>Tady jednou bude semestrální práce z KIV/WEB.</p>
+	
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<span class="navbar-brand">
+					<a href="#">Zdeněk Valeš</a> (administrátor)
+				</span>
+			</div>
+		
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		  <ul class="nav navbar-nav">
+			<li class="active"><a href="#">Uživatelé <span class="sr-only">(current)</span></a></li>
+			<li><a href="#">Uživatelé</a></li>
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Články <span class="caret"></span></a>
+			  <ul class="dropdown-menu">
+				<li><a href="#">Nové články</a></li>
+				<li><a href="#">Recenzované články</a></li>
+			  </ul>
+			</li>
+		  </ul>
+		</div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	
+	<div class="container">
+		
+		<div class="row col-xs-12">
+			FAKT VELKÝ LOGO
+		</div>
+		
+		<div class="col-xs-12 col-sm-9">
+			<h1>Konference KIV/WEB</h1>
+			<p>Tady jednou bude semestrální práce z KIV/WEB.</p>
+		</div>
+		
+		<!-- main menu -->
+		<div class="row row-offcanvas row-offcanvas-left">
+			<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+			  <div class="list-group">
+				<a href="#" class="list-group-item active">O konferenci</a>
+				<a href="#" class="list-group-item">Témata konference</a>
+				<a href="#" class="list-group-item">Organizace</a>
+				<a href="#" class="list-group-item">Příspěvky</a>
+			  </div>
+			</div><!--/.sidebar-offcanvas-->
+		</div>
+		
+		<footer>
+			<p>&copy; 2016 Zdeněk Valeš</p>
+		</footer>
+	</div>
     
 </body>
 </html>
