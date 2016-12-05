@@ -35,15 +35,15 @@ DROP TABLE IF EXISTS `kiv-web`.`user` ;
 CREATE TABLE IF NOT EXISTS `kiv-web`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(70) NOT NULL,
   `email` VARCHAR(100) NULL,
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
-  `Role_id` INT NOT NULL,
+  `role_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_user_Role_idx` (`Role_id` ASC),
-  CONSTRAINT `fk_user_Role`
-    FOREIGN KEY (`Role_id`)
+  INDEX `fk_user_role_idx` (`role_id` ASC),
+  CONSTRAINT `fk_user_role`
+    FOREIGN KEY (`role_id`)
     REFERENCES `kiv-web`.`role` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

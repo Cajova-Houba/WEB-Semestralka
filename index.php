@@ -68,6 +68,12 @@
 		<div class="col-xs-12 col-sm-9">
 			<h1>Konference KIV/WEB</h1>
 			<p>Tady jednou bude semestrální práce z KIV/WEB.</p>
+			
+			<h2>Test php
+			    <p>
+			        <?php echo phpversion();?>
+			     </p>
+			</h2>
 		</div>
 		
 		<!-- main menu -->
