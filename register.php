@@ -65,6 +65,7 @@
                         
                     case "4": echo $openTag."Chyba 4".$closeTag;
                                 break;
+                        
                     default: echo $openTag."Neznámá chyba.".$closeTag;
                                 break;
                 }

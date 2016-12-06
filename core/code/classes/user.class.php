@@ -1,10 +1,15 @@
 <?php
+require_once('BaseObject.class.php');
+
 /*
  Object representing a user.
 */
 
-class User {
-        private $USER_ROLE_ID = 1;
+class User extends BaseObject {
+        const TABLE_NAME = 'user';
+        const USER_ROLE_ID = 1;
+        const ADMIN_ROLE_ID = 2;
+        const REVIEWER_ROLE_ID = 3;
         private $firstName = '';
         private $lastName = '';
         private $username = '';
@@ -15,7 +20,7 @@ class User {
             $this->firstName = $firstName;
             $this->lastName = $lastName;
             $this->username = $username;
-            $this->roleId = $this->USER_ROLE_ID;
+            $this->roleId = User::USER_ROLE_ID;
         }
         
         function __construct2($firstName, $lastName, $username, $encryptedPassword) {
@@ -23,7 +28,11 @@ class User {
             $this->lastName = $lastName;
             $this->username = $username;
             $this->password = $encryptedPassword;
-            $this->roleId = $this->USER_ROLE_ID;
+            $this->roleId = User::USER_ROLE_ID;
+        }
+    
+        function getTableName() {
+            return User::TABLE_NAME;
         }
     
         function getFirstName() {
@@ -64,6 +73,14 @@ class User {
         
         function setRoleId($roleId) {
             $this->roleId = $roleId;
+        }
+    
+        function isAdmin() {
+            return $this->getRoleId() == User::ADMIN_ROLE_ID;
+        }
+    
+        function isReviewer() {
+            return $this->getRoleId() == User::REVIEWER_ROLE_ID;
         }
     
         /**

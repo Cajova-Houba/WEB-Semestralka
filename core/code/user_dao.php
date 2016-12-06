@@ -13,7 +13,7 @@
     function saveUser($user) {
         $db = getConnection();
         
-        $query = "INSERT INTO user(username, password,first_name,last_name,role_id) VALUES(:username,:password,:first_name,:last_name,:role_id)";
+        $query = "INSERT INTO ".User::TABLE_NAME."(username, password,first_name,last_name,role_id) VALUES(:username,:password,:first_name,:last_name,:role_id)";
         
         $stmt = $db->prepare($query);
         $stmt->execute(array(':username'=>$user->getUsername(),
@@ -35,7 +35,7 @@
     function getUserByUsername($username) {
         $db = getConnection();
         
-        $query = "SELECT * FROM user WHERE username=:username";
+        $query = "SELECT * FROM ".User::TABLE_NAME." WHERE username=:username";
         
         $stmt = $db->prepare($query);
         $stmt->execute(array(':username'=>$username));
@@ -46,6 +46,22 @@
         foreach($rows as $row) {
             $res = new User($row["first_name"], $row["last_name"], $row["username"], $row["password"]);
         }
+        
+        return $res;
+    }
+
+    /*
+        Tries to authenticate the user and returns true if the authentication is successfull.
+    */
+    function authenticate($username, $encryptedPassword) {
+        $db = getConnection();
+        
+        $query = "SELECT * FROM ".User::TABLE_NAME." WHERE username=:username AND password=:password";
+        $stmt = $db->prepare($query);
+        $stmt->execute(array(':username'=>$username, ':password'=>$encryptedPassword));
+        $res = $stmt->rowCount() == 1;
+        
+        $db = null;
         
         return $res;
     }

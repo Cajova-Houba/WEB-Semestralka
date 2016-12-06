@@ -1,5 +1,12 @@
 <?php
+/*
+
+This script will fetch a new user registration.
+
+*/
+
     require_once('user_dao.php');
+    require_once('utils.php');
 
     // user fields
     $firstName = isset($_POST["first_name"]) ? $_POST["first_name"] : "";
