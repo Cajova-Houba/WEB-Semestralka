@@ -7,7 +7,7 @@ require_once('BaseObject.class.php');
 
 class User extends BaseObject {
         const TABLE_NAME = 'user';
-        const USER_ROLE_ID = 1;
+        const AUTHOR_ROLE_ID = 1;
         const ADMIN_ROLE_ID = 2;
         const REVIEWER_ROLE_ID = 3;
         private $firstName = '';
@@ -20,7 +20,7 @@ class User extends BaseObject {
             $this->firstName = $firstName;
             $this->lastName = $lastName;
             $this->username = $username;
-            $this->roleId = User::USER_ROLE_ID;
+            $this->roleId = User::AUTHOR_ROLE_ID;
         }
         
         function __construct2($firstName, $lastName, $username, $encryptedPassword) {
@@ -28,8 +28,26 @@ class User extends BaseObject {
             $this->lastName = $lastName;
             $this->username = $username;
             $this->password = $encryptedPassword;
-            $this->roleId = User::USER_ROLE_ID;
+            $this->roleId = User::AUTHOR_ROLE_ID;
         }
+    
+        function __construct3($id, $firstName, $lastName, $username, $encryptedPassword, $roleId) {
+            $this->setId($id);
+            $this->firstName = $firstName;
+            $this->lastName = $lastName;
+            $this->username = $username;
+            $this->password = $encryptedPassword;
+            $this->roleId = $roleId;
+        }
+    
+        function fill($row) {
+            $this->setId($row["id"]);
+            $this->firstName = $row["first_name"];
+            $this->lastName = $row["last_name"];
+            $this->username = $row["username"];
+            $this->password = $row["password"];
+            $this->roleId = $row["role_id"];
+        } 
     
         function getTableName() {
             return User::TABLE_NAME;
@@ -81,6 +99,10 @@ class User extends BaseObject {
     
         function isReviewer() {
             return $this->getRoleId() == User::REVIEWER_ROLE_ID;
+        }
+    
+        function isAuthor() {
+            return $this->getRoleId() == User::AUTHOR_ROLE_ID;
         }
     
         /**

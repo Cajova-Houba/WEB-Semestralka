@@ -8,6 +8,8 @@ This script will fetch a new user registration.
     require_once('user_dao.php');
     require_once('utils.php');
 
+    $userDao = new UserDao();
+
     // user fields
     $firstName = isset($_POST["first_name"]) ? $_POST["first_name"] : "";
     $lastName = isset($_POST["last_name"]) ? $_POST["last_name"] : "";
@@ -35,53 +37,45 @@ This script will fetch a new user registration.
         
         // check for errors
         if(!$firstNameOk) {
-            header('Location: http://localhost/kiv-web/register.php?err=1');
+            header('Location: http://localhost/kiv-web/register.php?err='.Errors::FIRST_NAME_NOT_OK);
             die('Chyba při registraci, zkuste to znovu...');
         }
         if(!$lastNameOk) {
-            header('Location: http://localhost/kiv-web/register.php?err=2');
+            header('Location: http://localhost/kiv-web/register.php?err='.Errors::LAST_NAME_NOT_OK);
             die('Chyba při registraci, zkuste to znovu...');
         }
         if(!$usernameOk) {
-            header('Location: http://localhost/kiv-web/register.php?err=3');
+            header('Location: http://localhost/kiv-web/register.php?err='.Errors::USERNAMENAME_NOT_OK);
             die('Chyba při registraci, zkuste to znovu...');
         }
         if(!$passwordOk) {
-            header('Location: http://localhost/kiv-web/register.php?err=4');
+            header('Location: http://localhost/kiv-web/register.php?err='.Errors::PASSWORD_NOT_OK);
             die('Chyba při registraci, zkuste to znovu...');
         }
         
         // check for duplicities
-        $user = getUserByUsername($username);
+        $user = $userDao->getUserByUsername($username);
         if($user != null) {
-            header('Location: http://localhost/kiv-web/');
+            header('Location: http://localhost/kiv-web/register.php?err='.Errors::USER_ALREADY_EXISTS);
             die('Chyba při registraci, zkuste to znovu...');
         }
         
         // save the new user
         $user = new User($firstName, $lastName, $username);
         $user->setUnecryptedPassword($password);
-        $res = saveUser($user);
+        $res = $userDao->saveUser($user);
         
         // redirect
         if($res == 1) {
-            echo("Success.");
+            //success
+            redirHome();
         } else {
-            echo("User not saved.");
+            header('Location: http://localhost/kiv-web/register.php?err='.Errors::GENERAL_ERROR);
+            die('Chyba při registraci, zkuste to znovu...');
         }
         
     } else {
-        header('Location: http://localhost/kiv-web/');
-        die("http://localhost/kiv-web/");
-    }
-
-    /*
-    * Escape strings.
-    */
-    function escapechars($data) {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
+        // not a post request
+        redirHome();
     }
 ?>

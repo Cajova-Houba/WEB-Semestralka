@@ -3,7 +3,10 @@
 abstract class BaseObject {
     private $id = -1;
     
-    abstract function getTableName();
+    /*
+        Fills fileds with data from row.
+    */
+    abstract function fill($dtbRow);
     
     function getId() {
         return $this->id;

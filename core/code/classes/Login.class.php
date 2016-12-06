@@ -18,7 +18,7 @@ class Login{
     /**
      Checks if the user is logged in.
      */
-    public function isUserLoged(){
+    public function isUserLogged(){
         return $this->ses->isSessionSet($this->dUser);
     }
     
@@ -40,7 +40,7 @@ class Login{
     Returns the username or empty string if no user is logged in.
     */
     public function getUsername() {
-        if(!$this->isUserLoged()) {
+        if(!$this->isUserLogged()) {
             return '';
         }
         return $this->ses->readSession($this->dUser);

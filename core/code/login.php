@@ -7,6 +7,8 @@ This script will fetch login to the system.
     require_once('user_dao.php');
     require_once('classes/Login.class.php');
 
+    $userDao = new UserDao();
+
     if($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // get values from request
@@ -32,7 +34,7 @@ This script will fetch login to the system.
         }
         
         // authenticate
-        $auth = authenticate($username, hash('sha256', $password, false));
+        $auth = $userDao->authenticate($username, hash('sha256', $password, false));
         if(!$auth) {
             header('Location: http://localhost/kiv-web/login.php?err=3');
             die("Nope...");

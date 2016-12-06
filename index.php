@@ -1,18 +1,22 @@
-<!doctype html>
-
 <?php
+require_once('vendor/autoload.php');
+use Tracy\Debugger;
+
+Debugger::enable();
 require_once('core/code/user_dao.php');
 require_once('core/code/classes/Login.class.php');
-require_once('vendor/autoload.php');
 
 
 // is user logged in
+$userDao = new UserDao();
 $user = null;
 $login = new Login();
-if($login->isUserLoged()) {
-    $user = getUserByUsername($login->getUsername());
+if($login->isUserLogged()) {
+    $user = $userDao->getUserByUsername($login->getUsername());
 }
 ?>
+<!doctype html>
+
 
 <html lang="en">
 <head>
@@ -42,7 +46,7 @@ if($login->isUserLoged()) {
 	<script src="ui/bootstrap/js/bootstrap.min.js"></script>
 	
 	<?php
-        if($login->isUserLoged()) {
+        if($login->isUserLogged()) {
             if($user->isAdmin()) {
             /*USER ID ADMIN*/
     ?>
@@ -79,9 +83,6 @@ if($login->isUserLoged()) {
                       </ul>
                     </li>
                   </ul>
-                </div><!-- /.navbar-collapse -->
-              </div><!-- /.container-fluid -->
-            </nav>
 	<?php
             } else if ($user->isReviewer()){
             /* USER IS REVIEWER */
@@ -113,9 +114,6 @@ if($login->isUserLoged()) {
                     <li><a href="#">Nové články</a></li>
                     <li><a href="#">Hodnocené články</a></li>
                   </ul>
-                </div><!-- /.navbar-collapse -->
-              </div><!-- /.container-fluid -->
-            </nav>
     <?php
             } else {
                 /* USER IS JUST A NORMAL USER */
@@ -144,14 +142,22 @@ if($login->isUserLoged()) {
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   <ul class="nav navbar-nav">
 <!--                    <li class="active"><a href="#">Nové články<span class="sr-only">(current)</span></a></li>-->
-                    <li><a href="#">Nový článek</a></li>
+                    <li><a href="new_article.php">Nový článek</a></li>
                     <li><a href="#">Moje články</a></li>
+                  </ul>
+                  
+    <?php
+            } /* close the inner if branch */
+            
+            /*now close the nav for logged user (with any role)*/
+    ?>
+                  <ul class="nav navbar-nav navbar-right">
+                      <li><a href="logout.php">Logout</a></li>
                   </ul>
                 </div><!-- /.navbar-collapse -->
               </div><!-- /.container-fluid -->
             </nav>
     <?php
-            }
         } else {
             /* NO USER LOGGED IN */
     ?>
@@ -165,12 +171,18 @@ if($login->isUserLoged()) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
+                    
                     <span class="navbar-brand">
                         <a href="login.php">
                             Login
                         </a>
                     </span>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+    <!--                    <li class="active"><a href="#">Nové články<span class="sr-only">(current)</span></a></li>-->
+                        <li><a href="register.php">Nový uživatel</a></li>
+                    </ul>
                 </div>
           </div><!-- /.container-fluid -->
         </nav>
