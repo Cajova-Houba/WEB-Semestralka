@@ -45,6 +45,7 @@
         
         foreach($rows as $row) {
             $res = new User($row["first_name"], $row["last_name"], $row["username"], $row["password"]);
+            $res->setRoleId($row["role_id"]);
         }
         
         return $res;

@@ -1,5 +1,7 @@
 {
 	"require" : {
-		"monolog/monolog" : "1.0.*"
+		"monolog/monolog" : "1.0.*",
+		"tracy/tracy": "^2.4"
 	}
+
 }

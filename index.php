@@ -3,6 +3,7 @@
 <?php
 require_once('core/code/user_dao.php');
 require_once('core/code/classes/Login.class.php');
+require_once('vendor/autoload.php');
 
 
 // is user logged in
@@ -68,7 +69,7 @@ if($login->isUserLoged()) {
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Uživatelé <span class="sr-only">(current)</span></a></li>
+<!--                    <li class="active"><a href="#">Uživatelé <span class="sr-only">(current)</span></a></li>-->
                     <li><a href="#">Uživatelé</a></li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Články <span class="caret"></span></a>
@@ -108,7 +109,7 @@ if($login->isUserLoged()) {
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Nové články<span class="sr-only">(current)</span></a></li>
+<!--                    <li class="active"><a href="#">Nové články<span class="sr-only">(current)</span></a></li>-->
                     <li><a href="#">Nové články</a></li>
                     <li><a href="#">Hodnocené články</a></li>
                   </ul>
@@ -142,7 +143,7 @@ if($login->isUserLoged()) {
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Nové články<span class="sr-only">(current)</span></a></li>
+<!--                    <li class="active"><a href="#">Nové články<span class="sr-only">(current)</span></a></li>-->
                     <li><a href="#">Nový článek</a></li>
                     <li><a href="#">Moje články</a></li>
                   </ul>
