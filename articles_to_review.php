@@ -4,17 +4,22 @@ use Tracy\Debugger;
 
 Debugger::enable();
 require_once('core/code/dao/user_dao.php');
-require_once('core/code/dao/article_dao.php');
+require_once('core/code/dao/review_dao.php');
 require_once('core/code/classes/Login.class.php');
+require_once('core/code/utils.php');
 
 
-// is user logged in
+$reviewDao = new ReviewDao();
+// user must be logged in and must be reviewer
 $userDao = new UserDao();
-$articleDao = new ArticleDao();
 $user = null;
 $login = new Login();
-if($login->isUserLogged()) {
-    $user = $userDao->getUserByUsername($login->getUsername());
+if(!$login->isUserLogged()) {
+    redirHome();
+}
+$user = $userDao->getUserByUsername($login->getUsername());
+if($user == null || !$user->isReviewer()) {
+    redirHome();
 }
 ?>
 <!doctype html>
@@ -46,45 +51,46 @@ if($login->isUserLogged()) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="ui/js/scripts.js"></script>
 	<script src="ui/bootstrap/js/bootstrap.min.js"></script>
-	
+    
     <?php
         /* this script will choose the correct navbar */
         include('ui/navbar.php');
     ?>
-	<div class="container">
+    
+    	
+    <div class="container">
 		
 		<div class="row col-xs-12">
 			FAKT VELKÝ LOGO
 		</div>
 		
 		<div class="col-xs-12 col-sm-9">
-			<h1>Seznam příspěvků konference</h1>
+			<h1>Nové články k hodnocení</h1>
 			<?php
-                /* list all published articles and their authors */
-                $articles = $articleDao->getPublished();
+                /* list all new articles for reviewer */
+                $articles = $reviewDao->getArticlesToReview($user->getId());
                 foreach($articles as $article) {
-                    $authors = $articleDao->getAuthorsForArticle($article->getId());
-                    $authorsStr = "";
-                    foreach($authors as $author) {
-                        $authorsStr = $authorsStr.$author->getUsername()."; ";  
-                    }
+                    $title = $article["article"]->getTitle();
                     
-                    // trim the last ';'
-                    $authorsStr = rtrim($authorsStr, "; ");
+                    // get the name of the admin which has assigned the article for reviewer
+                    $assignedBy = "Assigned by: ";
+                    $assigner = $userDao->get($article["review"]->getAssignedById());
+                    if($assigner == null) {
+                        $assignedBy = $assignedBy."-";
+                    } else {
+                        $assignedBy = $assignedBy.$assigner->getUsername();
+                    }
             ?>
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <h4>
-                            <?php echo htmlspecialchars($article->getTitle()); ?>
+                            <?php echo htmlspecialchars($title); ?>
                             </h4>
                         </div>
 
-                        <div class="panel-footer" style="overflow:hidden;">
-                        <div style="float:left;">
-                           <?php
-                            htmlspecialchars($authorsStr); ?>
-                        </div>
-                            <div class="text-right"><?php echo $article->getCreated(); ?></div>
+                        <div class="panel-footer">
+                            <div class="text-left"><?php echo htmlspecialchars($assignedBy);
+                                ?></div>
                         </div>
                     </div>
             <?php

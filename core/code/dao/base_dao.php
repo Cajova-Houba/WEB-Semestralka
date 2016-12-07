@@ -18,7 +18,7 @@ class BaseDao {
         Returns a row with values from database or null if the record is not found in database.
     */
     function get($id) {
-        $query = "SELECT * FROM ".$tableName." WHERE id=:id";
+        $query = "SELECT * FROM `".$this->tableName."` WHERE id=:id";
         
         $db = getConnection();
         

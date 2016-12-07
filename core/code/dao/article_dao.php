@@ -9,7 +9,7 @@
         define('__CORE_ROOT__', dirname(dirname(__FILE__))); 
     }
     require_once(__CORE_ROOT__.'/classes/Article.class.php');
-    require_once('user_dao.php');
+    require_once(__CORE_ROOT__.'/classes/User.class.php');
     
     class ArticleDao extends BaseDao {
         
@@ -42,7 +42,7 @@
         function newArticle($article) {
             $db = getConnection();
 
-//            $db->beginTransaction();
+            $db->beginTransaction();
             $highestArticleIdQuery = "SELECT MAX(id) AS id FROM ".Article::TABLE_NAME;
             $artQuery = "INSERT INTO ".Article::TABLE_NAME."(id,title, content, created, state) VALUES(:id,:title, :content, :created, :state)";
             $authorsQuery = "INSERT INTO ".Article::AUTHOR_TABLE_NAME."(user_id, article_id) VALUES(:userId, :articleId)";
@@ -74,20 +74,20 @@
                 $db = null;
                 return 0;
             }
-//            $db->commit();
+            $db->commit();
 
             
             // save the authors
-//            $stmt = $db->prepare($authorsQuery);
-//            foreach($article->getAuthors() as $author) {
-//                $stmt->execute(array(":userId" => $author, 
-//                                     ":articleId" => $id));
-//                $rows = $stmt->rowCount();
-//                if($rows != 1) {
-//                    $db = null;
-//                    return 0;
-//                }
-//            }
+            $stmt = $db->prepare($authorsQuery);
+            foreach($article->getAuthors() as $author) {
+                $stmt->execute(array(":userId" => $author, 
+                                     ":articleId" => $id));
+                $rows = $stmt->rowCount();
+                if($rows != 1) {
+                    $db = null;
+                    return 0;
+                }
+            }
 
             $db = null;
 

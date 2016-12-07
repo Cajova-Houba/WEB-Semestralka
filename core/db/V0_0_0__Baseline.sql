@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `kiv-web`.`review` (
   `article_id` INT NOT NULL,
   `reviewer_id` INT NOT NULL,
   `assigned_by_id` INT NOT NULL,
-  `review_result_id` INT NOT NULL,
+  `review_result_id` INT NULL DEFAULT null,
   PRIMARY KEY (`id`),
   INDEX `fk_review_article1_idx` (`article_id` ASC),
   INDEX `fk_review_user1_idx` (`reviewer_id` ASC),

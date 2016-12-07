@@ -18,8 +18,8 @@ class UserDao extends BaseDao {
     /*
         Returns the user with this id or null if not found.
     */
-    function getUser($id) {
-        $row = $this->get($id);
+    function get($id) {
+        $row = parent::get($id);
         if($row == null) {
             return null;
         }
@@ -67,10 +67,10 @@ class UserDao extends BaseDao {
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $res = null;
         $db = null;
-
+        
         foreach($rows as $row) {
             $res = new User();
-            $res->fill($row);
+            $res->fill($row);   
         }
 
         return $res;

@@ -14,34 +14,38 @@ class User extends BaseObject {
         private $lastName = '';
         private $username = '';
         private $password = '';
-        private $roleId = '';
+        private $roleId;
         
-        function __construct1() {
+        function __construct() {
             $this->roleId = User::AUTHOR_ROLE_ID;
         }
     
-        function __construct2($firstName, $lastName, $username) {
-            $this->firstName = $firstName;
-            $this->lastName = $lastName;
-            $this->username = $username;
-            $this->roleId = User::AUTHOR_ROLE_ID;
-        }
-        
-        function __construct3($firstName, $lastName, $username, $encryptedPassword) {
-            $this->firstName = $firstName;
-            $this->lastName = $lastName;
-            $this->username = $username;
-            $this->password = $encryptedPassword;
-            $this->roleId = User::AUTHOR_ROLE_ID;
+        /*
+            Creates a new object with first name, last name and
+            username with AUTHOR role.
+        */
+        static function nameUsername($firstName, $lastName, $username) {
+            $user = new self();
+            $user->setFirstName($firstName);
+            $user->setLastName($lastName);
+            $user->setUsername($username);
+            
+            return $user;
         }
     
-        function __construct4($id, $firstName, $lastName, $username, $encryptedPassword, $roleId) {
-            $this->setId($id);
-            $this->firstName = $firstName;
-            $this->lastName = $lastName;
-            $this->username = $username;
-            $this->password = $encryptedPassword;
-            $this->roleId = $roleId;
+        static function nameUsernamePassword($firstName, $lastName, $username, $encPassword) {
+            $user = User::nameUsername($firstName, $lastName, $username);
+            $user->setPassword($encPassword);
+            
+            return $user;
+        }
+        
+        static function allParams($id, $firstName, $lastName, $username, $encPassword, $roleId) {
+            $user = User::nameUsernamePassword($firstName, $lastname, $username, $encPassword);
+            $user->setId($id);
+            $user->setRoleId($roleId);
+            
+            return $user;
         }
     
         function fill($row) {

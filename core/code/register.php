@@ -61,8 +61,9 @@ This script will fetch a new user registration.
         }
         
         // save the new user
-        $user = new User($firstName, $lastName, $username);
+        $user = User::nameUsername($firstName, $lastName, $username);
         $user->setUnecryptedPassword($password);
+        var_dump($user);
         $res = $userDao->saveUser($user);
         
         // redirect
