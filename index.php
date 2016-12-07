@@ -68,6 +68,7 @@ if($login->isUserLogged()) {
 		</div>
 		
 		<?php
+            $activeMenuItem = 0;
             include('ui/main_menu.php');
         ?>
 		

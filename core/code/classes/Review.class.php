@@ -17,6 +17,18 @@ class ReviewResult extends BaseObject {
         $this->crit4 = $c4;
     }
     
+    function getTableName() {
+        return ReviewResult::TABLE_NAME;
+    }
+    
+    function fill($row) {
+        $this->setId($row["id"]);
+        $this->crit1 = $row["crit_1"];
+        $this->crit2 = $row["crit_2"];
+        $this->crit3 = $row["crit_3"];
+        $this->crit4 = $row["crit_4"];
+    }
+    
     function getCrit1() {
         return $this->crit1;
     }

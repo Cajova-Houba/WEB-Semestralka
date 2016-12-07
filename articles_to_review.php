@@ -72,6 +72,8 @@ if($user == null || !$user->isReviewer()) {
                 foreach($articles as $article) {
                     $title = $article["article"]->getTitle();
                     
+                    $rId = htmlspecialchars($article["review"]->getId());
+                    
                     // get the name of the admin which has assigned the article for reviewer
                     $assignedBy = "Assigned by: ";
                     $assigner = $userDao->get($article["review"]->getAssignedById());
@@ -84,7 +86,11 @@ if($user == null || !$user->isReviewer()) {
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <h4>
-                            <?php echo htmlspecialchars($title); ?>
+                            <?php 
+                                echo "<a href=\"rate_article.php?review=".$rId."\">";
+                                echo htmlspecialchars($title); 
+                                echo "</a>";
+                            ?>
                             </h4>
                         </div>
 

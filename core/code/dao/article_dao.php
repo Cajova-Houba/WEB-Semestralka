@@ -23,9 +23,9 @@
         /*
             Returns article with this id, or null if not found.
         */
-        function getArticle($id) {
+        function get($id) {
             
-            $row = $this->get($id);
+            $row = parent::get($id);
             if($row == null) {
                 return null;
             }

@@ -93,6 +93,7 @@ if($login->isUserLogged()) {
 		</div>
 		
 		<?php
+            $activeMenuItem = 3;
             include('ui/main_menu.php');
         ?>
 		
