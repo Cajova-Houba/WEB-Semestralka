@@ -4,8 +4,8 @@
 This script will fetch the creation of the new article.
 
 */
-require_once('article_dao.php');
-require_once('user_dao.php');
+require_once('dao/article_dao.php');
+require_once('dao/user_dao.php');
 require_once('utils.php');
 require_once('classes/Login.class.php');
 

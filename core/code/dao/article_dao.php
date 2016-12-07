@@ -4,7 +4,11 @@
     This file contains methods for database related stuff.
     */
     require_once('base_dao.php');
-    require_once('classes/Article.class.php');
+    if(!defined('__CORE_ROOT__')) {
+        //get one dir up - use it when require_once classes
+        define('__CORE_ROOT__', dirname(dirname(__FILE__))); 
+    }
+    require_once(__CORE_ROOT__.'/classes/Article.class.php');
     require_once('user_dao.php');
     
     class ArticleDao extends BaseDao {
@@ -93,7 +97,7 @@
         /*
             Returns all published articles.
         */
-        function getAllPublished() {
+        function getPublished() {
             $query = "SELECT * FROM ".Article::TABLE_NAME." WHERE state=:state";
             $articles = [];
 
@@ -111,6 +115,31 @@
 
             $db = null;
             return $articles;
+        }
+        
+        /*
+        
+            Returns an array of User objects for article.
+        
+        */
+        function getAuthorsForArticle($articleId) {
+            $query = "SELECT user.id,username,password,email,first_name,last_name,role_id FROM ".User::TABLE_NAME." LEFT JOIN ".Article::AUTHOR_TABLE_NAME." ON user.id=author.user_id where author.article_id=:articleId ";
+            $authors = [];
+            
+            $db = getConnection();
+            
+            $stmt = $db->prepare($query);
+            $stmt->execute(array(":articleId" => $articleId));
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($rows as $row) {
+                $author = new User();
+                $author->fill($row);
+                $authors[] = $author;
+            }
+            
+            $db = null;
+            
+            return $authors;
         }
     }
 

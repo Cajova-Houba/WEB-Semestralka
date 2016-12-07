@@ -2,8 +2,12 @@
 /*
 This file contains methods for database related stuff.
 */
-require_once('classes/User.class.php');
 require_once('base_dao.php');
+if(!defined('__CORE_ROOT__')) {
+    //get one dir up - use it when require_once classes
+    define('__CORE_ROOT__', dirname(dirname(__FILE__))); 
+}
+require_once(__CORE_ROOT__.'/classes/User.class.php');
 
 class UserDao extends BaseDao {
     
@@ -65,8 +69,8 @@ class UserDao extends BaseDao {
         $db = null;
 
         foreach($rows as $row) {
-            $res = new User($row["first_name"], $row["last_name"], $row["username"], $row["password"]);
-            $res->setRoleId($row["role_id"]);
+            $res = new User();
+            $res->fill($row);
         }
 
         return $res;

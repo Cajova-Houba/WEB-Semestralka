@@ -48,7 +48,7 @@ class Article extends BaseObject {
         $this->setId($row["id"]);
         $this->title = $row["title"];
         $this->content = $row["content"];
-        $this->created = $row["crated"]; 
+        $this->created = $row["created"]; 
         $this->state = $row["state"];
     } 
     

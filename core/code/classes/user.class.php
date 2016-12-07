@@ -16,14 +16,18 @@ class User extends BaseObject {
         private $password = '';
         private $roleId = '';
         
-        function __construct($firstName, $lastName, $username) {
+        function __construct1() {
+            $this->roleId = User::AUTHOR_ROLE_ID;
+        }
+    
+        function __construct2($firstName, $lastName, $username) {
             $this->firstName = $firstName;
             $this->lastName = $lastName;
             $this->username = $username;
             $this->roleId = User::AUTHOR_ROLE_ID;
         }
         
-        function __construct2($firstName, $lastName, $username, $encryptedPassword) {
+        function __construct3($firstName, $lastName, $username, $encryptedPassword) {
             $this->firstName = $firstName;
             $this->lastName = $lastName;
             $this->username = $username;
@@ -31,7 +35,7 @@ class User extends BaseObject {
             $this->roleId = User::AUTHOR_ROLE_ID;
         }
     
-        function __construct3($id, $firstName, $lastName, $username, $encryptedPassword, $roleId) {
+        function __construct4($id, $firstName, $lastName, $username, $encryptedPassword, $roleId) {
             $this->setId($id);
             $this->firstName = $firstName;
             $this->lastName = $lastName;

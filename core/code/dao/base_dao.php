@@ -4,9 +4,7 @@
     A basic data access object.
 
 */
-
 require_once('db_connector.php');
-require_once('classes/BaseObject.class.php');
 
 class BaseDao {
     

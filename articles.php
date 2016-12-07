@@ -4,11 +4,13 @@ use Tracy\Debugger;
 
 Debugger::enable();
 require_once('core/code/dao/user_dao.php');
+require_once('core/code/dao/article_dao.php');
 require_once('core/code/classes/Login.class.php');
 
 
 // is user logged in
 $userDao = new UserDao();
+$articleDao = new ArticleDao();
 $user = null;
 $login = new Login();
 if($login->isUserLogged()) {
@@ -196,24 +198,45 @@ if($login->isUserLogged()) {
 		</div>
 		
 		<div class="col-xs-12 col-sm-9">
-			<h1>Konference KIV/WEB</h1>
-			<p>Tady jednou bude semestrální práce z KIV/WEB.</p>
-			
-			<h2>Test php
-			    <p>
-			        <?php echo phpversion();?>
-			     </p>
-			</h2>
+			<h1>Seznam příspěvků konference</h1>
+			<?php
+                /* list all published articles and their authors */
+                $articles = $articleDao->getPublished();
+                foreach($articles as $article) {
+                    $authors = $articleDao->getAuthorsForArticle($article->getId());
+                    $authorsStr = "";
+                    foreach($authors as $author) {
+                        $authorsStr = $authorsStr.$author->getUsername()."; ";  
+                    }
+                    
+                    // trim the last ';'
+                    $authorsStr = rtrim($authorsStr, "; ");
+            ?>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4>
+                            <?php echo $article->getTitle(); ?>
+                            </h4>
+                        </div>
+
+                        <div class="panel-footer" style="overflow:hidden;">
+                            <div class="text-left" style="float:left"><?php echo $authorsStr; ?></div>
+                            <div class="text-right"><?php echo $article->getCreated(); ?></div>
+                        </div>
+                    </div>
+            <?php
+                } /*foreach article end*/
+            ?>
 		</div>
 		
 		<!-- main menu -->
 		<div class="row row-offcanvas row-offcanvas-left">
 			<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
 			  <div class="list-group">
-				<a href="index.php" class="list-group-item active">O konferenci</a>
+				<a href="index.php" class="list-group-item">O konferenci</a>
 				<a href="#" class="list-group-item">Témata konference</a>
 				<a href="#" class="list-group-item">Organizace</a>
-				<a href="articles.php" class="list-group-item">Příspěvky</a>
+				<a href="articles.php" class="list-group-item active">Příspěvky</a>
 			  </div>
 			</div><!--/.sidebar-offcanvas-->
 		</div>
