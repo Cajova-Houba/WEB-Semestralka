@@ -111,7 +111,7 @@ if($article == null) {
 			</div>
 			
 			<div class="col-xs-6 col-md-4">
-                <form method="post" actiion="#" class="form-horizontal">
+                <form method="post" action="core/code/rate_article.php" class="form-horizontal">
                     <h3>Hodnocení:</h3>
                     <div class="form-group">
                         <label for="c1" class="col-sm-6 control-label">Kritérium 1: </label>
@@ -137,6 +137,8 @@ if($article == null) {
                             <input type="number" min="0" max="10" class="form-control" id="c4" name="c4">
                         </div>
                     </div>
+                    
+                    <input type="hidden" name="review_id" value="<?php echo $revId?>">
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Uložit hodnocení</button>

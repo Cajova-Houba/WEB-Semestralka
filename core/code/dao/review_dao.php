@@ -35,22 +35,41 @@ class ReviewDao extends BaseDao {
     
     /*
         Returns 1 if the article wass assigned and 0 if error occurs.
+        If the article was correctly assigned, it's state will change to 'TO_BE_REVIEWED'
     */
     function assignReview($articleId, $reviewerId, $assignedById) {
         $query = "INSERT INTO ".Review::TABLE_NAME."(article_id, reviewer_id,assigned_by_id) VALUES(:articleId, :reviewerId,:assignedById)";
-        
-        $db = getConnection();
+        $artQuery = "UPDATE ".Article::TABLE_NAME." SET state=:tbr WHERE id=:aid";
         
         try {
+            $db = getConnection();
+            
+            $db->beginTransaction();
+            
             $stmt = $db->prepare($query);
             $stmt->execute(array("articleId"=>$articleId,
                                  "reviewerid"=>$reviewerId,
                                  "assignedById"=>$assignedById));
             
             $rowCount = $stmt->rowCount();
+            
+            if($rowCount != 1) {
+                $db->rollBack();
+                $db = null;
+                return 0;
+            }
+            
+            $stmt = $db->prepare($artQuery);
+            $stmt->execute(array("tbr" => ArticleState::TO_BE_REVIEWED,
+                                 "aid" => $articleId));
+            $rowCount = $stmt->rowCount();
+            
+            $db->commit();
+            
             return $rowCount;
         } catch (Exception $e) {
             /* error occured */
+            $db->rollBack();
             $db = null;
             return 0;
         }
@@ -147,6 +166,13 @@ class ReviewDao extends BaseDao {
         $db = null;
         
         return 1;
+    }
+    
+    /*
+        Returns true if the review is assigned to the reviewer.
+    */
+    function correctReviewer($reviewId, $reviewerId) {
+        return true;
     }
 }
 

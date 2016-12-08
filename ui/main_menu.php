@@ -57,7 +57,7 @@
             <a href="articles.php" class="list-group-item">Příspěvky</a>
         <?php
           }
-        ?>
+        ?>    
       </div>
     </div><!--/.sidebar-offcanvas-->
 </div>
