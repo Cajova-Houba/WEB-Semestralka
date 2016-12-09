@@ -5,6 +5,7 @@
     It is expected, that $login (Login.class.php) and $user (User.class.php) variables are set.
 
 */
+
 if (!isset($login)) {
     include(__DIR__.'/navbar/navbar-default.php');
 } else if (isset($login) && !isset($user)) {

@@ -64,6 +64,7 @@ if($login->isUserLogged()) {
                 $articles = $articleDao->getPublished();
                 foreach($articles as $article) {
                     $authors = $articleDao->getAuthorsForArticle($article->getId());
+//                    var_dump($authors);
                     $authorsStr = "";
                     foreach($authors as $author) {
                         $authorsStr = $authorsStr.$author->getUsername()."; ";  
@@ -80,10 +81,10 @@ if($login->isUserLogged()) {
                         </div>
 
                         <div class="panel-footer" style="overflow:hidden;">
-                        <div style="float:left;">
-                           <?php
-                            htmlspecialchars($authorsStr); ?>
-                        </div>
+                            <div style="float:left;">
+                               <?php
+                                echo htmlspecialchars($authorsStr); ?>
+                            </div>
                             <div class="text-right"><?php echo $article->getCreated(); ?></div>
                         </div>
                     </div>

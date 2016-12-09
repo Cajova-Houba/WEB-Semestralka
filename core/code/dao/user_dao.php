@@ -91,6 +91,47 @@ class UserDao extends BaseDao {
 
         return $res;
     }
+
+    /*
+     * Returns all registered reviewers.
+     */
+    function getReviewers() {
+        $query = "SELECT * FROM ".User::TABLE_NAME." WHERE role_id=:revRole";
+        $reviewers = [];
+
+        $db = getConnection();
+
+        $stmt = $db->prepare($query);
+        $stmt->execute(array(":revRole" => User::REVIEWER_ROLE_ID));
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $row) {
+            $r = new User();
+            $r->fill($row);
+            $reviewers[] = $r;
+        }
+
+        $db = null;
+
+        return $reviewers;
+    }
+
+    /*
+     *  Returns true if the user with $revId exists and is reviewer.
+     */
+    function reviewerExists($revId) {
+        $query = "SELECT id FROM ".User::TABLE_NAME." WHERE id=:id AND role_id=:revRole";
+
+        $db = getConnection();
+
+        $stmt = $db->prepare($query);
+        $stmt->execute(array(":id" => $revId,
+                             ":revRole" => User::REVIEWER_ROLE_ID));
+        $rowCount = $stmt->rowCount();
+
+        $db = null;
+
+        return $rowCount == 1;
+    }
 }
 
 ?>

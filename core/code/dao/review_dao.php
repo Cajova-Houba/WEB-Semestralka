@@ -48,7 +48,7 @@ class ReviewDao extends BaseDao {
             
             $stmt = $db->prepare($query);
             $stmt->execute(array("articleId"=>$articleId,
-                                 "reviewerid"=>$reviewerId,
+                                 "reviewerId"=>$reviewerId,
                                  "assignedById"=>$assignedById));
             
             $rowCount = $stmt->rowCount();
@@ -81,7 +81,8 @@ class ReviewDao extends BaseDao {
         The Article object will contain title.
     */
     function getArticlesToReview($reviewerId) {
-        $query = "SELECT article.title, review.id, review.article_id, review.reviewer_id, review.assigned_by_id, review.review_result_id FROM review LEFT JOIN article ON review.article_id=article.id WHERE review.reviewer_id=:reviewerId AND review.review_result_id IS NULL";
+        $query = "SELECT article.title, review.id, review.article_id, review.reviewer_id, review.assigned_by_id, review.review_result_id 
+                  FROM review LEFT JOIN article ON review.article_id=article.id WHERE review.reviewer_id=:reviewerId AND review.review_result_id IS NULL";
         
         $res = [];
         
@@ -145,7 +146,7 @@ class ReviewDao extends BaseDao {
                              ":c3"=>$reviewResult->getCrit3(),
                              ":c4"=>$reviewResult->getCrit4(),));
         $rowCount = $stmt->rowCount();
-        if($rowCunt != 1) {
+        if($rowCount != 1) {
             $db->rollBack();
             return 0;
         }
@@ -153,10 +154,11 @@ class ReviewDao extends BaseDao {
         $db->commit();
         
         //third update the review row
-        $query = "UPDATE ".Review::TABLE_NAME." SET review_result_id=:id";
+        $query = "UPDATE ".Review::TABLE_NAME." SET review_result_id=:id WHERE id=:reviewId";
         
         $stmt = $db->prepare($query);
-        $stmt->execute(array(":id" => $id));
+        $stmt->execute(array(":id" => $id,
+                             ":reviewId" => $reviewId));
         $rowCount = $stmt->rowCount();
         if($rowCount != 1) {
             $db = null;
@@ -172,7 +174,81 @@ class ReviewDao extends BaseDao {
         Returns true if the review is assigned to the reviewer.
     */
     function correctReviewer($reviewId, $reviewerId) {
-        return true;
+        $query = "SELECT id FROM ".Review::TABLE_NAME." WHERE id=:rId AND reviewer_id=:revId";
+
+        $db = getConnection();
+
+        $stmt = $db->prepare($query);
+        $stmt->execute(array(":rId" => $reviewId,
+                             ":revId" => $reviewerId));
+        $rowCount = $stmt->rowCount();
+        $db = null;
+        return $rowCount == 1;
+    }
+
+    /*
+     * Returns articles reviewed by a certain reviewer.
+     */
+    function getReviewedArticles($reviewerId) {
+        $query = "SELECT article.* FROM review left join article on article.id=article_id where review.reviewer_id=:reviewerId";
+        $articles = [];
+
+        $db = getConnection();
+        $rows = $this->executeSelectStatement($db,$query,array(":reviewerId"=>$reviewerId));
+        foreach ($rows as $row) {
+            $a = new Article();
+            $a->fill($row);
+            $articles[] = $a;
+        }
+
+        $db = null;
+
+        return $articles;
+    }
+
+    /*
+     * Returns articles and their reviews.
+     *
+     * One item from the returned list will contain ["article"] and ["reviewResult1"],["reviewResult2"],["reviewResult3"],["reviewResult4"].
+     * The items will be indexed by article id.
+     *
+     */
+    function getAllReviewedArticles() {
+        $query = "SELECT article.id as aid, article.title as title, review_result.* 
+                  FROM review 
+                    LEFT JOIN review_result on review_result.id=review.review_result_id 
+                    LEFT JOIN article on article.id=review.article_id  WHERE review.review_result_id IS NOT NULL";
+        $reviewedArticles = [];
+
+        $db = getConnection();
+
+        $rows = $this->executeSelectStatement($db, $query, array());
+        foreach ($rows as $row) {
+            $article = new Article();
+            $article->setId($row["aid"]);
+            $article->setTitle($row["title"]);
+
+            $review = new ReviewResult();
+            $review->fill($row);
+
+            if(isset($reviewedArticles[$article->getId()])) {
+                //article is in the tmp array, add next review result
+                if(!isset($reviewedArticles[$article->getId()]["reviewResult2"])) {
+                    $reviewedArticles[$article->getId()]["reviewResult2"] = $review;
+                } else if(!isset($reviewedArticles[$article->getId()]["reviewResult3"])) {
+                    $reviewedArticles[$article->getId()]["reviewResult3"] = $review;
+                } else {
+                    $reviewedArticles[$article->getId()]["reviewResult4"] = $review;
+                }
+            } else {
+                //article isn't in the temp array yet
+                $reviewedArticles[$article->getId()] = array("article" => $article, "reviewResult1" => $review);
+            }
+        }
+
+        $db = null;
+
+        return $reviewedArticles;
     }
 }
 

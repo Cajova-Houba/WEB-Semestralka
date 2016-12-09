@@ -141,6 +141,29 @@
             
             return $authors;
         }
+
+        /**
+         * Returns a list of new articles - those without a reviewer assigned.
+         */
+        function getNewArticles() {
+            $query = "SELECT * FROM ".Article::TABLE_NAME." WHERE state=:state";
+            $articles = [];
+
+            $db = getConnection();
+
+            $stmt = $db->prepare($query);
+            $stmt->execute(array(":state" => ArticleState::CREATED));
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($rows as $row) {
+                $a = new Article();
+                $a->fill($row);
+                $articles[] = $a;
+            }
+
+            $db = null;
+
+            return $articles;
+        }
     }
 
 ?>

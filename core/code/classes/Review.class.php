@@ -4,17 +4,24 @@ require_once('BaseObject.class.php');
 
 class ReviewResult extends BaseObject {
     
-    const TABLE_MAME = 'review_result';
+    const TABLE_NAME = 'review_result';
     private $crit1 = 0;
     private $crit2 = 0;
     private $crit3 = 0;
     private $crit4 = 0;
-    
-    function __construct($c1, $c2, $c3, $c4) {
-        $this->crit1 = $c1;
-        $this->crit2 = $c2;
-        $this->crit3 = $c3;
-        $this->crit4 = $c4;
+
+    function __construct() {
+
+    }
+
+    static function newResult($c1, $c2, $c3, $c4) {
+        $reviewResult = new ReviewResult();
+        $reviewResult->setCrit1($c1);
+        $reviewResult->setCrit2($c2);
+        $reviewResult->setCrit3($c3);
+        $reviewResult->setCrit4($c4);
+
+        return $reviewResult;
     }
     
     function getTableName() {

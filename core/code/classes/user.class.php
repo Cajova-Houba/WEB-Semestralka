@@ -41,7 +41,7 @@ class User extends BaseObject {
         }
         
         static function allParams($id, $firstName, $lastName, $username, $encPassword, $roleId) {
-            $user = User::nameUsernamePassword($firstName, $lastname, $username, $encPassword);
+            $user = User::nameUsernamePassword($firstName, $lastName, $username, $encPassword);
             $user->setId($id);
             $user->setRoleId($roleId);
             
@@ -54,7 +54,7 @@ class User extends BaseObject {
             $this->lastName = $row["last_name"];
             $this->username = $row["username"];
             $this->password = $row["password"];
-            $this->roleId = $row["role_id"];
+            $this->roleId = intval($row["role_id"]);
         } 
     
         function getTableName() {
@@ -102,15 +102,15 @@ class User extends BaseObject {
         }
     
         function isAdmin() {
-            return $this->getRoleId() == User::ADMIN_ROLE_ID;
+            return $this->getRoleId() === User::ADMIN_ROLE_ID;
         }
     
         function isReviewer() {
-            return $this->getRoleId() == User::REVIEWER_ROLE_ID;
+            return $this->getRoleId() === User::REVIEWER_ROLE_ID;
         }
     
         function isAuthor() {
-            return $this->getRoleId() == User::AUTHOR_ROLE_ID;
+            return $this->getRoleId() === User::AUTHOR_ROLE_ID;
         }
     
         /**

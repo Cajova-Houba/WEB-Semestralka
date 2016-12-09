@@ -34,6 +34,24 @@ class BaseDao {
         
         return $row;
     }
+
+    /*
+     * Returns true if the object with id exist.
+     */
+    function exists($id) {
+        $obj = $this->get($id);
+
+        return $obj != null;
+    }
+
+    /*
+     * Executes the SELECT * statement and returns fetchAll();
+     */
+    function executeSelectStatement($db, $query, $parameters) {
+        $stmt = $db->prepare($query);
+        $stmt->execute($parameters);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>

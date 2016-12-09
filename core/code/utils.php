@@ -60,6 +60,21 @@ Some basic utils.
         header('Location: http://localhost/kiv-web/');
         die('http://localhost/kiv-web/');
     }
+
+    /*
+     * Coverts authors array to string.
+     */
+    function authorsToString($authorsArray) {
+        $authorsStr = "";
+        foreach($authorsArray as $author) {
+            $authorsStr = $authorsStr.$author->getUsername()."; ";
+        }
+
+        // trim the last ';'
+        $authorsStr = rtrim($authorsStr, "; ");
+
+        return $authorsStr;
+    }
     
     /*
     * Escape strings.

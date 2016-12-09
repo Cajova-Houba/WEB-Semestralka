@@ -78,9 +78,9 @@ if($article == null) {
     	
     <div class="container">
 		
-		<div class="row col-xs-12">
-			FAKT VELKÝ LOGO
-		</div>
+		<?php
+            include ('ui/logo.php');
+        ?>
 		
 		<div class="col-xs-12 col-sm-9">
 			<h1>Hodnocení článku</h1>
@@ -99,10 +99,10 @@ if($article == null) {
 			    </div>
 			    
 			    <div class="panel-footer" style="overflow:hidden">
-                    <div class="float:left">
+                    <div style="float:left">
                         Authors: 
                     </div>
-                    <div>
+                    <div class="text-right">
                         <?php
                             echo htmlspecialchars($article->getCreated());
                         ?>
@@ -116,25 +116,25 @@ if($article == null) {
                     <div class="form-group">
                         <label for="c1" class="col-sm-6 control-label">Kritérium 1: </label>
                         <div class="col-sm-6">
-                            <input type="number" min="0" max="10" class="form-control" id="c1" name="c1">
+                            <input type="number" min="0" max="10" class="form-control" id="c1" name="c1" value="5">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="c2" class="col-sm-6 control-label">Kritérium 2: </label>
                         <div class="col-sm-6">
-                            <input type="number" min="0" max="10" class="form-control" id="c2" name="c2">
+                            <input type="number" min="0" max="10" class="form-control" id="c2" name="c2" value="5">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="c3" class="col-sm-6 control-label">Kritérium 3: </label>
                         <div class="col-sm-6">
-                            <input type="number" min="0" max="10" class="form-control" id="c3" name="c3">
+                            <input type="number" min="0" max="10" class="form-control" id="c3" name="c3" value="5">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="c4" class="col-sm-6 control-label">Kritérium 4: </label>
                         <div class="col-sm-6">
-                            <input type="number" min="0" max="10" class="form-control" id="c4" name="c4">
+                            <input type="number" min="0" max="10" class="form-control" id="c4" name="c4" value="5">
                         </div>
                     </div>
                     

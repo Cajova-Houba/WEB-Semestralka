@@ -69,6 +69,7 @@ if($user == null || !$user->isReviewer()) {
 			<?php
                 /* list all new articles for reviewer */
                 $articles = $reviewDao->getArticlesToReview($user->getId());
+//                var_dump($articles);
                 foreach($articles as $article) {
                     $title = $article["article"]->getTitle();
                     
