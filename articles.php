@@ -6,6 +6,7 @@ Debugger::enable();
 require_once('core/code/dao/user_dao.php');
 require_once('core/code/dao/article_dao.php');
 require_once('core/code/classes/Login.class.php');
+require_once ('core/code/utils.php');
 
 
 // is user logged in
@@ -76,14 +77,16 @@ if($login->isUserLogged()) {
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <h4>
-                            <?php echo htmlspecialchars($article->getTitle()); ?>
+                                <a href="display_article.php?aId=<?php echo escapechars($article->getId());?>">
+                                    <?php echo escapechars($article->getTitle()); ?>
+                                </a>
                             </h4>
                         </div>
 
                         <div class="panel-footer" style="overflow:hidden;">
                             <div style="float:left;">
                                <?php
-                                echo htmlspecialchars($authorsStr); ?>
+                                echo escapechars($authorsStr); ?>
                             </div>
                             <div class="text-right"><?php echo $article->getCreated(); ?></div>
                         </div>

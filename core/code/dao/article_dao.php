@@ -164,6 +164,14 @@
 
             return $articles;
         }
+
+        /*
+         * Returns true if the article exists and is PUBLISHED.
+         */
+        function isPublished($articleId) {
+            $a = $this->get($articleId);
+            return $a !== null && $a->getState() == ArticleState::PUBLISHED;
+        }
     }
 
 ?>

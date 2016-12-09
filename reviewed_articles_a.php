@@ -109,50 +109,59 @@ include('ui/navbar.php');
                 </thead>
 
                 <tbody>
-                <?php
-                    $reviewedArticles = $reviewDao->getAllReviewedArticles();
+                    <?php
+                        $reviewedArticles = $reviewDao->getAllReviewedArticles();
 
-                    foreach ($reviewedArticles as $reviewedArticle) {
-                        $article = $reviewedArticle["article"];
-                        $authors = $articleDao->getAuthorsForArticle($article->getId());
+                        foreach ($reviewedArticles as $reviewedArticle) {
+                            $article = $reviewedArticle["article"];
+                            $authors = $articleDao->getAuthorsForArticle($article->getId());
 
-                        // review result 1 is always set.
-                        $reviewResult1 = $reviewedArticle["reviewResult1"];
-                        $reviewResult2 = isset($reviewedArticle["reviewResult2"]) ? $reviewedArticle["reviewResult2"] : ReviewResult::newResult('-','-','-','-');
-                        $reviewResult3 = isset($reviewedArticle["reviewResult3"]) ? $reviewedArticle["reviewResult4"] : ReviewResult::newResult('-','-','-','-');
-                        $reviewResult4 = isset($reviewedArticle["reviewResult4"]) ? $reviewedArticle["reviewResult3"] : ReviewResult::newResult('-','-','-','-');
-                        $authorsStr = authorsToString($authors);
-                ?>
-                <tr>
-                    <td><?php echo escapechars($article->getTitle());?></td>
-                    <td><?php echo escapechars($authorsStr);?></td>
+                            // review result 1 is always set.
+                            $reviewResult1 = $reviewedArticle["reviewResult1"];
+                            $reviewResult2 = isset($reviewedArticle["reviewResult2"]) ? $reviewedArticle["reviewResult2"] : ReviewResult::newResult('-','-','-','-');
+                            $reviewResult3 = isset($reviewedArticle["reviewResult3"]) ? $reviewedArticle["reviewResult4"] : ReviewResult::newResult('-','-','-','-');
+                            $reviewResult4 = isset($reviewedArticle["reviewResult4"]) ? $reviewedArticle["reviewResult3"] : ReviewResult::newResult('-','-','-','-');
+                            $authorsStr = authorsToString($authors);
 
-                    <td><?php echo escapechars($reviewResult1->getCrit1());?></td>
-                    <td><?php echo escapechars($reviewResult1->getCrit2());?></td>
-                    <td><?php echo escapechars($reviewResult1->getCrit3());?></td>
-                    <td><?php echo escapechars($reviewResult1->getCrit4());?></td>
+                            //if all reviews are not set, disable publish and reject buttons
+                            $allSet = true;
+                            for ($i = 1; $i <= 4; $i++) {
+                                $allSet = $allSet & isset($reviewedArticle["reviewResult".$i]);
+                            }
+                            $disabled = $allSet ? "" : "disabled";
+                    ?>
+                    <tr>
+                        <form id="rev_form">
+                            <td><?php echo escapechars($article->getTitle());?></td>
+                            <td><?php echo escapechars($authorsStr);?></td>
 
-                    <td><?php echo escapechars($reviewResult2->getCrit1());?></td>
-                    <td><?php echo escapechars($reviewResult2->getCrit2());?></td>
-                    <td><?php echo escapechars($reviewResult2->getCrit3());?></td>
-                    <td><?php echo escapechars($reviewResult2->getCrit4());?></td>
+                            <td><?php echo escapechars($reviewResult1->getCrit1());?></td>
+                            <td><?php echo escapechars($reviewResult1->getCrit2());?></td>
+                            <td><?php echo escapechars($reviewResult1->getCrit3());?></td>
+                            <td><?php echo escapechars($reviewResult1->getCrit4());?></td>
 
-                    <td><?php echo escapechars($reviewResult3->getCrit1());?></td>
-                    <td><?php echo escapechars($reviewResult3->getCrit2());?></td>
-                    <td><?php echo escapechars($reviewResult3->getCrit3());?></td>
-                    <td><?php echo escapechars($reviewResult3->getCrit4());?></td>
+                            <td><?php echo escapechars($reviewResult2->getCrit1());?></td>
+                            <td><?php echo escapechars($reviewResult2->getCrit2());?></td>
+                            <td><?php echo escapechars($reviewResult2->getCrit3());?></td>
+                            <td><?php echo escapechars($reviewResult2->getCrit4());?></td>
 
-                    <td>
-                        <button class="btn btn-primary">Publish it!</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger">Reject it!</button>
-                    </td>
-                </tr>
+                            <td><?php echo escapechars($reviewResult3->getCrit1());?></td>
+                            <td><?php echo escapechars($reviewResult3->getCrit2());?></td>
+                            <td><?php echo escapechars($reviewResult3->getCrit3());?></td>
+                            <td><?php echo escapechars($reviewResult3->getCrit4());?></td>
+
+                            <td>
+                                <button class="btn btn-primary" type="submit" <?php echo $disabled?>>Publish it!</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" <?php echo $disabled?>>Reject it!</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <?php
+                        }
+                    ?>
                 </tbody>
-                <?php
-                    }
-                ?>
             </table>
     </div>
 
