@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `kiv-web`.`user` (
   `email` VARCHAR(100) NULL,
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
+  `enabled` BOOLEAN NOT NULL DEFAULT TRUE,
   `role_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_user_role_idx` (`role_id` ASC),

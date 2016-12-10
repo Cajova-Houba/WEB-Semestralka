@@ -217,12 +217,13 @@ class ReviewDao extends BaseDao {
         $query = "SELECT article.id as aid, article.title as title, review_result.* 
                   FROM review 
                     LEFT JOIN review_result on review_result.id=review.review_result_id 
-                    LEFT JOIN article on article.id=review.article_id  WHERE review.review_result_id IS NOT NULL";
+                    LEFT JOIN article on article.id=review.article_id  
+                  WHERE review.review_result_id IS NOT NULL AND article.state != :pubState";
         $reviewedArticles = [];
 
         $db = getConnection();
 
-        $rows = $this->executeSelectStatement($db, $query, array());
+        $rows = $this->executeSelectStatement($db, $query, array(":pubState" => ArticleState::PUBLISHED));
         foreach ($rows as $row) {
             $article = new Article();
             $article->setId($row["aid"]);
@@ -237,8 +238,6 @@ class ReviewDao extends BaseDao {
                     $reviewedArticles[$article->getId()]["reviewResult2"] = $review;
                 } else if(!isset($reviewedArticles[$article->getId()]["reviewResult3"])) {
                     $reviewedArticles[$article->getId()]["reviewResult3"] = $review;
-                } else {
-                    $reviewedArticles[$article->getId()]["reviewResult4"] = $review;
                 }
             } else {
                 //article isn't in the temp array yet
@@ -249,6 +248,26 @@ class ReviewDao extends BaseDao {
         $db = null;
 
         return $reviewedArticles;
+    }
+
+    /*
+     * Returns Review objects for article.
+     */
+    function getReviewsForArticle($articleId) {
+        $query = "SELECT * FROM ".Review::TABLE_NAME." WHERE article_id=:artId AND review_result_id is not null";
+        $reviews = [];
+
+        $db = getConnection();
+        $rows = $this->executeSelectStatement($db, $query, array(":artId" => $articleId));
+        $db = null;
+
+        foreach ($rows as $row) {
+            $r = new Review();
+            $r->fill($row);
+            $reviews[] = $r;
+        }
+
+        return $reviews;
     }
 }
 

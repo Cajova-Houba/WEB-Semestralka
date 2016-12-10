@@ -10,6 +10,7 @@
     }
     require_once(__CORE_ROOT__.'/classes/Article.class.php');
     require_once(__CORE_ROOT__.'/classes/User.class.php');
+    require_once (__CORE_ROOT__.'/classes/Review.class.php');
     
     class ArticleDao extends BaseDao {
         
@@ -171,6 +172,76 @@
         function isPublished($articleId) {
             $a = $this->get($articleId);
             return $a !== null && $a->getState() == ArticleState::PUBLISHED;
+        }
+
+        /*
+         * Publishes article and returns 1 if the update was successful.
+         */
+        function publishArticle($articleId) {
+            $query = "UPDATE ".Article::TABLE_NAME." SET state=:state WHERE id=:aid";
+
+            $db = getConnection();
+
+            $rowCount = $this->executeModifyStatement($db, $query, array(":state" => ArticleState::PUBLISHED, ":aid" => $articleId));
+
+            $db = null;
+
+            return $rowCount;
+        }
+
+        /*
+         * Rejects the article. Deletes the review results and changes the article's state to REJECTED.
+         * Returns 0 if error occurs and 1 if everything is ok.
+         */
+        function rejectArticle($articleId) {
+            $getIds = "SELECT review_result_id FROM ".Review::TABLE_NAME." WHERE article_id=:artId";
+            $delResRevQ1 = "UPDATE ".Review::TABLE_NAME." SET review_result_id = NULL WHERE article_id=:artId";
+            $delResRevQ2 = "REMOVE FROM ".ReviewResult::TABLE_NAME." WHERE id=:rrid";
+            $changeStateQ = "UPDATE ".Article::TABLE_NAME." SET state=:state WHERE id=:artId";
+
+            $db = getConnection();
+            $db->beginTransaction();
+
+            $rows = $this->executeSelectStatement($db, $getIds, array(":artId" => $articleId));
+
+            // not enough reviews
+            if(sizeof($rows) != 3) {
+                echo "not enough rows ".sizeof($rows)."<br>";
+                $db->rollBack();
+                $db = null;
+                return 0;
+            }
+
+            // set review_result_id to null and remove it
+            $rowCount = $this->executeModifyStatement($db, $delResRevQ1, (array(":artId" => $articleId)));
+            if($rowCount != 3) {
+                echo "review with article id".$articleId." not removed ".$rowCount."<br>";
+                $db->rollBack();
+                $db = null;
+                return 0;
+            }
+            foreach ($rows as $row) {
+                $rowCount = $this->executeModifyStatement($db, $delResRevQ2, (array(":rrid" => $row["review_result_id"])));
+                if($rowCount != 1) {
+                    echo "review result with id".$row["review_result_id"]." not removed ".$rowCount."<br>";
+                    $db->rollBack();
+                    $db = null;
+                    return 0;
+                }
+            }
+
+            // update the article state
+            $rowCount = $this->executeModifyStatement($db, $changeStateQ, array(":state" => ArticleState::REJECTED, ":artId" => $articleId));
+            if ($rowCount != 1) {
+                echo "article state not updated ".$articleId."  ".$rowCount."<br>";
+                $db->rollBack();
+                return 0;
+            }
+
+            $db->commit();
+            $db = null;
+
+            return 1;
         }
     }
 

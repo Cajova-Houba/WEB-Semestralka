@@ -11,7 +11,6 @@ class ReviewResult extends BaseObject {
     private $crit4 = 0;
 
     function __construct() {
-
     }
 
     static function newResult($c1, $c2, $c3, $c4) {

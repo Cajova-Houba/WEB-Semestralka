@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         redirHome();
     }
     
-    $reviewRes = new ReviewResult($crit1, $crit2, $crit3, $crit4);
+    $reviewRes = ReviewResult::newResult($crit1, $crit2, $crit3, $crit4);
     $res = $reviewDao->reviewArticle($reviewId, $reviewRes);
     
     if($res == 1) {

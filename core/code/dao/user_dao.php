@@ -14,7 +14,21 @@ class UserDao extends BaseDao {
     function __construct() {
         parent::__construct(User::TABLE_NAME);
     }
-    
+
+    function getAll()
+    {
+        $rows = parent::getAll();
+        $users = [];
+
+        foreach ($rows as $row) {
+            $u = new User();
+            $u->fill($row);
+            $users[] = $u;
+        }
+
+        return $users;
+    }
+
     /*
         Returns the user with this id or null if not found.
     */

@@ -13,7 +13,20 @@ class BaseDao {
     function __construct($tableName) {
         $this->tableName = $tableName;
     }
-    
+
+    /*
+     * Returns all objects in database.
+     */
+    function getAll() {
+        $query = "SELECT * FROM ".$this->tableName;
+        $db = getConnection();
+
+        $rows = $this->executeSelectStatement($db, $query, array());
+        $db = null;
+
+        return $rows;
+    }
+
     /*
         Returns a row with values from database or null if the record is not found in database.
     */
@@ -21,18 +34,16 @@ class BaseDao {
         $query = "SELECT * FROM `".$this->tableName."` WHERE id=:id";
         
         $db = getConnection();
-        
-        $stmt = $db->prepare($query);
-        $stmt->execute(array(":id" => $id));
         $obj = null;
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $rows = $this->executeSelectStatement($db, $query, array(":id" => $id));
         foreach($rows as $row) {
             $obj = $row;
         }
         
         $db = null;
         
-        return $row;
+        return $obj;
     }
 
     /*
@@ -51,6 +62,16 @@ class BaseDao {
         $stmt = $db->prepare($query);
         $stmt->execute($parameters);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /*
+     * Executes the INSERT/UPDATE/DELETE statement and returns the number of
+     * affected rows.
+     */
+    function executeModifyStatement($db, $query, $parameters) {
+        $stmt = $db->prepare($query);
+        $stmt->execute($parameters);
+        return $stmt->rowCount();
     }
 }
 
