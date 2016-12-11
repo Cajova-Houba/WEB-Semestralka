@@ -57,8 +57,12 @@ Some basic utils.
         Sets the header to home and dies.
     */
     function redirHome() {
-        header('Location: http://localhost/kiv-web/');
-        die('http://localhost/kiv-web/');
+        redirTo('');
+    }
+
+    function redirTo($page) {
+        header('Location: http://localhost/kiv-web/'.escapechars($page));
+        die('http://localhost/kiv-web/'.escapeshellarg($page));
     }
 
     /*

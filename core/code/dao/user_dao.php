@@ -146,6 +146,48 @@ class UserDao extends BaseDao {
 
         return $rowCount == 1;
     }
+
+
+    /*
+     * Marks the user's account as enabled.
+     * Returns 1 if ok, 0 if an error occurs.
+     */
+    function enableUser($userId) {
+        $query = "UPDATE ".User::TABLE_NAME." SET enabled=true WHERE id=:userId";
+
+        $db = getConnection();
+        $rowCount =  $this->executeModifyStatement($db, $query, array(":userId" => $userId));
+        $db = null;
+
+        return $rowCount;
+    }
+
+    /*
+     * Marks the user's account as disabled.
+     * Returns 1 if ok, 0 if an error occurs.
+     */
+    function disableUser($userId) {
+        $query = "UPDATE ".User::TABLE_NAME." SET enabled=false WHERE id=:userId";
+
+        $db = getConnection();
+        $rowCount =  $this->executeModifyStatement($db, $query, array(":userId" => $userId));
+        $db = null;
+
+        return $rowCount;
+    }
+
+    /*
+     * Updates the users role and returns 1 if the update was successful.
+     */
+    function updateRole($userId, $roleId) {
+        $query = "UPDATE ".User::TABLE_NAME." SET role_id=:roleId WHERE id=:userId";
+
+        $db = getConnection();
+        $rowCount = $this->executeModifyStatement($db, $query, array("roleId" => $roleId, "userId" => $userId));
+        $db = null;
+
+        return $rowCount;
+    }
 }
 
 ?>

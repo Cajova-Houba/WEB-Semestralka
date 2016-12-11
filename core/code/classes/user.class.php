@@ -15,6 +15,7 @@ class User extends BaseObject {
         private $username = '';
         private $password = '';
         private $roleId;
+        private $enabled = true;
         
         function __construct() {
             $this->roleId = User::AUTHOR_ROLE_ID;
@@ -32,92 +33,101 @@ class User extends BaseObject {
             
             return $user;
         }
-    
-        static function nameUsernamePassword($firstName, $lastName, $username, $encPassword) {
+
+    static function nameUsernamePassword($firstName, $lastName, $username, $encPassword) {
             $user = User::nameUsername($firstName, $lastName, $username);
             $user->setPassword($encPassword);
-            
+
             return $user;
         }
-        
-        static function allParams($id, $firstName, $lastName, $username, $encPassword, $roleId) {
+
+    static function allParams($id, $firstName, $lastName, $username, $encPassword, $roleId) {
             $user = User::nameUsernamePassword($firstName, $lastName, $username, $encPassword);
             $user->setId($id);
             $user->setRoleId($roleId);
-            
+
             return $user;
         }
-    
-        function fill($row) {
+
+    function fill($row) {
             $this->setId($row["id"]);
             $this->firstName = $row["first_name"];
             $this->lastName = $row["last_name"];
             $this->username = $row["username"];
             $this->password = $row["password"];
             $this->roleId = intval($row["role_id"]);
-        } 
-    
-        function getTableName() {
+            $this->enabled = $row["enabled"];
+        }
+
+    function getTableName() {
             return User::TABLE_NAME;
         }
-    
-        function getFirstName() {
+
+    function getFirstName() {
             return $this->firstName;
         }
-        
-        function getLastName() {
+
+    function getLastName() {
             return $this->lastName;
         }
-        
-        function getUsername() {
+
+    function getUsername() {
             return $this->username;
         }
-        
-        function getPassword() {
+
+    function getPassword() {
             return $this->password;
         }
-        
-        function getRoleId() {
+
+    function getRoleId() {
             return $this->roleId;
         }
-        
-        function setFirstName($firstName) {
-            $this->firstName = $firstName;
-        }
-        
-        function setLastName($lastName) {
-            $this->lastName = $lastName;
-        }
-        
-        function setUsername($username) {
-            $this->username = $username;
-        }
-        
-        function setPassword($password) {
-            $this->password = $password;
-        }
-        
-        function setRoleId($roleId) {
-            $this->roleId = $roleId;
-        }
-    
-        function isAdmin() {
-            return $this->getRoleId() === User::ADMIN_ROLE_ID;
-        }
-    
-        function isReviewer() {
-            return $this->getRoleId() === User::REVIEWER_ROLE_ID;
-        }
-    
-        function isAuthor() {
-            return $this->getRoleId() === User::AUTHOR_ROLE_ID;
-        }
-    
-        /**
-        Takes the unecrypted password and uses the sha256 to encrypt it.
-        */
-        function setUnecryptedPassword($password) {
-            $this->password = hash("sha256", $password, false);
-        }
+
+    function isEnabled() {
+            return $this->enabled;
+    }
+
+    function setFirstName($firstName) {
+        $this->firstName = $firstName;
+    }
+
+    function setLastName($lastName) {
+        $this->lastName = $lastName;
+    }
+
+    function setUsername($username) {
+        $this->username = $username;
+    }
+
+    function setPassword($password) {
+        $this->password = $password;
+    }
+
+    function setRoleId($roleId) {
+        $this->roleId = $roleId;
+    }
+
+    function setEnabled($enabled) {
+            $this->enabled = $enabled;
+    }
+
+    function isAdmin() {
+        return $this->isEnabled() && $this->getRoleId() === User::ADMIN_ROLE_ID;
+    }
+
+    function isReviewer() {
+        return $this->isEnabled() && $this->getRoleId() === User::REVIEWER_ROLE_ID;
+    }
+
+    function isAuthor() {
+        return $this->isEnabled() && $this->getRoleId() === User::AUTHOR_ROLE_ID;
+    }
+
+    /**
+    Takes the unecrypted password and uses the sha256 to encrypt it.
+    */
+    function setUnecryptedPassword($password) {
+        $this->password = hash("sha256", $password, false);
+    }
 }
 ?>

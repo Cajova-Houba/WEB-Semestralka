@@ -56,6 +56,21 @@ class BaseDao {
     }
 
     /*
+     * Removes the oobject from database.
+     * Returns 1 if the object was successfully removed.
+     */
+    function remove($id) {
+        $query = "DELETE FROM ".$this->tableName." WHERE id=:id";
+        $db = getConnection();
+
+        $rowCount = $this->executeModifyStatement($db,$query,array(":id" => $id));
+
+        $db = null;
+
+        return $rowCount;
+    }
+
+    /*
      * Executes the SELECT * statement and returns fetchAll();
      */
     function executeSelectStatement($db, $query, $parameters) {

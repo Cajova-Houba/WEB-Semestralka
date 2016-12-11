@@ -86,13 +86,12 @@ include('ui/navbar.php');
 
             <tbody>
             <?php
-            $users = $userDao->getAll();
-            $roles = $roleDao->getAll();
-
-            foreach ($users as $user) {
+                $users = $userDao->getAll();
+                $roles = $roleDao->getAll();
+                foreach ($users as $user) {
                 ?>
                 <tr>
-                    <form id="rev_form" action="core/code/publish_article.php" method="post">
+                    <form id="rev_form" action="core/code/modify_user.php" method="post">
                         <input type="hidden" name="user_id" value="<?php echo escapechars($user->getId());?>">
 
                         <td><?php echo escapechars($user->getId());?></td>
@@ -100,36 +99,46 @@ include('ui/navbar.php');
                         <td><?php echo escapechars($user->getFirstName());?></td>
                         <td><?php echo escapechars($user->getLastName());?></td>
                         <td>
-                            <select>
+                            <select name="role_id" class="form-control">
                                 <?php
-                            /* print all roles and mark the user's role as selected */
-                            foreach ($roles as $role) {
+                                /* print all roles and mark the user's role as selected */
+                                foreach ($roles as $role) {
                                     if ($role->getId() == $user->getRoleId()) {
-                            ?>
-                                        <option selected="selected">
-                            <?php
+                                        ?>
+                                        <option selected="selected" value="<?php echo escapechars($role->getId())?>">
+                                        <?php
                                     } else {
-                            ?>
-                                        <option>
-                            <?php
+                                        ?>
+                                        <option value="<?php echo escapechars($role->getId())?>">
+                                        <?php
                                     }
 
                                     echo escapechars($role->getName());
-                            ?>
+                                    ?>
                                     </option>
-                            <?php
+                                    <?php
                                 }
-                            ?>
-                            <?php echo escapechars($user->getRoleId());?>
+                                ?>
+                                <?php echo escapechars($user->getRoleId());?>
                             </select>
                         </td>
-                        <td><button class="btn btn-primary">Update</button></td>
-                        <td><button class="btn btn-warning">Zakázat účet</button></td>
-                        <td><button class="btn btn-danger">Smazat účet</button></td>
+                        <td><button class="btn btn-primary" name="action" value="update">Update</button></td>
+                        <?php
+                            if ($user->isEnabled()) {
+                        ?>
+                            <td><button class="btn btn-warning" name="action" value="disable">Zakázat účet</button></td>
+                        <?php
+                            } else {
+                        ?>
+                            <td><button class="btn btn-warning" name="action" value="enable">Povolit účet</button></td>
+                        <?php
+                            }
+                        ?>
+                        <td><button class="btn btn-danger"  name="action" value="delete">Smazat účet</button></td>
                     </form>
                 </tr>
                 <?php
-            }
+                }
             ?>
             </tbody>
         </table>
