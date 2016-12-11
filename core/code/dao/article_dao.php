@@ -124,7 +124,7 @@
         
         */
         function getAuthorsForArticle($articleId) {
-            $query = "SELECT user.id,username,password,email,first_name,last_name,role_id FROM ".User::TABLE_NAME." LEFT JOIN ".Article::AUTHOR_TABLE_NAME." ON user.id=author.user_id where author.article_id=:articleId ";
+            $query = "SELECT user.id,enabled,username,password,email,first_name,last_name,role_id FROM ".User::TABLE_NAME." LEFT JOIN ".Article::AUTHOR_TABLE_NAME." ON user.id=author.user_id where author.article_id=:articleId ";
             $authors = [];
             
             $db = getConnection();
