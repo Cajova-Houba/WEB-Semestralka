@@ -2,6 +2,12 @@
 require_once ('db_connector.php');
 require_once ('base_dao.php');
 require_once ('classes/Attachment.class.php');
+if(!defined('__SERVER_ROOT__')) {
+    //get two dirs up - to get to the upload folder
+    define('__SERVER_ROOT__', dirname(dirname(dirname(dirname(__FILE__)))));
+}
+
+
 /**
  * Attachment dao.
  */
@@ -58,7 +64,7 @@ class AttachmentDao extends BaseDao {
     function save($attachment) {
         $query = "INSERT INTO ".Attachment::TABLE_NAME."(path, name, article_id) VALUES(:path,:name,:articleId)";
 
-        $db = getConnection();
+        $db = getConnection();;
 
         $rowCount = $this->executeModifyStatement($db, $query, array(":path" => $attachment->getPath(),
                                                                      ":name" => $attachment->getName(),
@@ -66,6 +72,44 @@ class AttachmentDao extends BaseDao {
         $db = null;
 
         return $rowCount;
+    }
+
+    /*
+     * Saves a new file and saves its meta data.
+     * Returns 1 if ok, 0 if error.
+     */
+    function saveFile($file, $articleId) {
+
+        var_dump($file);
+
+        // save file
+        $path = __SERVER_ROOT__.'/upload/';
+        $name = sha1_file($file["tmp_name"]);
+        if(!move_uploaded_file($file["tmp_name"], $path.$name)) {
+            return 0;
+        }
+
+        // save metadata
+        $attachment = new Attachment();
+        $attachment->setArticleId($articleId);
+        $attachment->setName($name);
+        $attachment->setPath($path);
+        return $this->save($attachment);
+    }
+
+    /*
+     * Removes attachments assigned to some article.
+     */
+    function removeByArticle($articleId) {
+        $q = "SELECT FROM ".Attachment::TABLE_NAME." WHERE article_id=:aid";
+
+        $db = getConnection();
+        $rows = $this->executeSelectStatement($db, $q, array("aid" => $articleId));
+        $db = null;
+
+        foreach ($rows as $row) {
+            $this->remove($row["id"]);
+        }
     }
 }
 

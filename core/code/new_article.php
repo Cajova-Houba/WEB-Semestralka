@@ -6,11 +6,13 @@ This script will fetch the creation of the new article.
 */
 require_once('dao/article_dao.php');
 require_once('dao/user_dao.php');
+require_once ('dao/attachment_dao.php');
 require_once('utils.php');
 require_once('classes/Login.class.php');
 
 $userDao = new UserDao();
 $articleDao = new ArticleDao();
+$attachmentDao = new AttachmentDao();
 
 // first, check is the user is logged in
 $login = new Login();
@@ -26,8 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = isset($_POST["title"]) ? escapechars($_POST["title"]) : "";
     $content = isset($_POST["content"]) ? escapechars($_POST["content"]) : "";
     $created = date("Y-m-d H:i:s");
-//    $attachment =
-    
+    $attachment = isset($_FILES["attachment"]) ? $_FILES["attachment"] : null;
+
     // validate
     $titleOk = checkTitle($title);
     $contentOk = checkContent($content);
@@ -41,6 +43,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: http://localhost/kiv-web/new_article.php?err='.Errors::CONTENT_NOT_OK);
         die('Chyba při registraci, zkuste to znovu...');
     }
+
+    /* file too big */
+    if($attachment["size"] > 500000) {
+        redirTo("new_article.php?err=".Errors::FILE_NOT_OK);
+    }
     
     // save the article
     $article = new Article();
@@ -50,16 +57,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $authors = [];
     $authors[] = $user->getId();
     $article->setAuthors($authors);
-    
-//    print_r($article);
-//    echo("Title: ".$article->getTitle());
-    $res = $articleDao->newArticle($article);
-    if($res != 1) {
+
+    $articleId = $articleDao->newArticle($article);
+    if($articleId == 0) {
         /*error*/
 //        echo("Error");
         redirHome();
     } else {
         /*success*/
+
+        /* save the attachment */
+        if($attachment != null) {
+            $res = $attachmentDao->saveFile($attachment, $articleId);
+            if($res != 1) {
+                /*error => remove article */
+
+//                echo "Error while saving the file";
+                $articleDao->remove($articleId);
+            }
+        } else {
+//            echo "file is null.";
+//            var_dump($_FILES);
+//            var_dump($_POST);
+        }
 //        echo("Success");
         redirHome();
     }

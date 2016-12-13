@@ -3,13 +3,14 @@
     /*
     This file contains methods for database related stuff.
     */
-    require_once('base_dao.php');
+    require_once ('base_dao.php');
+    require_once ('attachment_dao.php');
     if(!defined('__CORE_ROOT__')) {
         //get one dir up - use it when require_once classes
         define('__CORE_ROOT__', dirname(dirname(__FILE__))); 
     }
-    require_once(__CORE_ROOT__.'/classes/Article.class.php');
-    require_once(__CORE_ROOT__.'/classes/User.class.php');
+    require_once (__CORE_ROOT__.'/classes/Article.class.php');
+    require_once (__CORE_ROOT__.'/classes/User.class.php');
     require_once (__CORE_ROOT__.'/classes/Review.class.php');
     
     class ArticleDao extends BaseDao {
@@ -39,6 +40,7 @@
         
         /*
             Saves the new article and its authors.
+            Returns 0 or id.
         */
         function newArticle($article) {
             $db = getConnection();
@@ -92,7 +94,7 @@
 
             $db = null;
 
-            return 1;
+            return $id;
         }
 
         /*
@@ -242,6 +244,27 @@
             $db = null;
 
             return 1;
+        }
+
+        /*
+         * Removes the article and its authors and attachments.
+         */
+        function remove($id)
+        {
+            $remAuthorsQ = "DELETE FROM ".Article::AUTHOR_TABLE_NAME." WHERE article_id=:aid";
+
+            // remove authors
+            $db = getConnection();
+            $this->executeModifyStatement($db, $remAuthorsQ, array(":aid" => $id));
+            $db = null;
+
+            // remove attachments
+            $atDao = new AttachmentDao();
+            $atDao->removeByArticle($id);
+            $atDao = null;
+
+            // remove article
+            return parent::remove($id);
         }
     }
 

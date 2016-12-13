@@ -22,6 +22,7 @@ class Errors {
         /* Errors during creating a new article */
         const TITLE_NOT_OK = 6;
         const CONTENT_NOT_OK = 7;
+        const FILE_NOT_OK = 10;
 
         /* Errors during login */
         const BAD_USERNAME_PASSWORD = 8;
@@ -50,11 +51,14 @@ class Errors {
                     return "Uživatel s tímto username již existuje.";
                     break;
 
-                    case Errors::TITLE_NOT_OK:
+                case Errors::TITLE_NOT_OK:
                     return "Chybný název článku.";
                     break;
                 case Errors::CONTENT_NOT_OK:
                     return "Chybný obsah článku.";
+                    break;
+                case Errors::FILE_NOT_OK:
+                    return "Chybný soubor.";
                     break;
 
                 case Errors::BAD_USERNAME_PASSWORD:

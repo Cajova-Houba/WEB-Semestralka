@@ -70,7 +70,7 @@ if($user == null || !$user->isAuthor()) {
 		
 		<div class="col-xs-12 col-sm-9">
 			<h1>Nový článek</h1>
-			<form action="core/code/new_article.php" method="post" id="art_form">
+			<form action="core/code/new_article.php" method="post" id="art_form" enctype="multipart/form-data">
 			    <div class="form-group">
 			        <label for="title">Název</label>
 			        <input type="text" name="title" id="title" class="form-control">
