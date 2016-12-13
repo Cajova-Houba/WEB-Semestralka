@@ -13,12 +13,14 @@ Debugger::enable();
 require_once('core/code/dao/user_dao.php');
 require_once('core/code/dao/review_dao.php');
 require_once('core/code/dao/article_dao.php');
+require_once('core/code/dao/attachment_dao.php');
 require_once('core/code/classes/Login.class.php');
 require_once('core/code/utils.php');
 
 
 $reviewDao = new ReviewDao();
 $articleDao = new ArticleDao();
+$attachmentDao = new AttachmentDao();
 // no user has to be logged in
 // article must exist and must be PUBLISHED
 $userDao = new UserDao();
@@ -34,7 +36,7 @@ if(!isset($_GET["aId"]) || !$articleDao->isPublished($_GET["aId"])) {
 $article = $articleDao->get($_GET["aId"]);
 $authors = $articleDao->getAuthorsForArticle($article->getId());
 $authorsStr = authorsToString($authors);
-
+$attachments = $attachmentDao->getAttachmentsForArticle($article->getId());
 ?>
 
 
@@ -88,7 +90,13 @@ include('ui/navbar.php');
             ?>
         </p>
 
-        Příloha: <button class="btn btn-primary">Stáhnout</button>
+        <?php
+            if(sizeof($attachments) != 0) {
+        ?>
+                Příloha: <a href="download_file.php?fid=<?php echo escapechars($attachments[0]->getId());?>"><button class="btn btn-primary"> Stáhnout</button></a>
+        <?php
+            }
+        ?>
 
         <div style="overflow:hidden;">
             <div style="float:left;">

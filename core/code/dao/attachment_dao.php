@@ -1,7 +1,11 @@
 <?php
 require_once ('db_connector.php');
 require_once ('base_dao.php');
-require_once ('classes/Attachment.class.php');
+if(!defined('__CORE_ROOT__')) {
+    //get one dir up - use it when require_once classes
+    define('__CORE_ROOT__', dirname(dirname(__FILE__)));
+}
+require_once (__CORE_ROOT__.'/classes/Attachment.class.php');
 if(!defined('__SERVER_ROOT__')) {
     //get two dirs up - to get to the upload folder
     define('__SERVER_ROOT__', dirname(dirname(dirname(dirname(__FILE__)))));

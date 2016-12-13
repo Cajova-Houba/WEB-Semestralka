@@ -5,6 +5,7 @@
     */
     require_once ('base_dao.php');
     require_once ('attachment_dao.php');
+    require_once ('user_dao.php');
     if(!defined('__CORE_ROOT__')) {
         //get one dir up - use it when require_once classes
         define('__CORE_ROOT__', dirname(dirname(__FILE__))); 
