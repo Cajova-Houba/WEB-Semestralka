@@ -94,22 +94,8 @@ if($user == null || !$user->isAuthor()) {
             
             <?php 
                 if(isset($_GET["err"])) {
-                    $openTag = "<br><div class=\"row\"><div class=\"panel panel-danger\"> <div class=\"panel-heading\"> <h3 class=\"panel-title\">Chyba! </h3></div> <div class=\"panel-body\">";
-                    $closeTag = "</div></div></div>";
-                    $errCode = $_GET["err"];
-
-                    switch($errCode) {
-                        case Errors::TITLE_NOT_OK: 
-                                    echo $openTag."Název článku je chybný.".$closeTag;
-                                    break;
-
-                        case Errors::CONTENT_NOT_OK: 
-                                    echo $openTag."Obsah je špatný.".$closeTag;
-                                    break;
-
-                        default: echo $openTag."Neznámá chyba.".$closeTag;
-                                    break;
-                    }
+                    $err = escapechars($_GET["err"]);
+                    include ('ui/error_panel.php');
                 }
             ?>
 		</div>

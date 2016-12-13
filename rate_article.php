@@ -144,7 +144,15 @@ if($article == null) {
                         <button type="submit" class="btn btn-primary">Uložit hodnocení</button>
                     </div>
                 </form>
+                <?php
+                if(isset($_GET["err"])) {
+                    $err = escapechars($_GET["err"]);
+                }
+                include ('ui/error_panel.php');
+                ?>
 			</div>
+
+
 		</div>
 		
 		<?php

@@ -35,7 +35,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!$reviewDao->correctReviewer($reviewId, $user->getId())) {
         redirHome();
     }
-    
+
+    //check that all criterias are in corect range
+    if(!criteriaOk($crit1) || !criteriaOk($crit2) || !criteriaOk($crit3) || !criteriaOk($crit4)) {
+        redirTo('rate_article.php?review='.escapechars($reviewId).'&err='.Errors::BAD_CRITERIAS);
+    }
+
     $reviewRes = ReviewResult::newResult($crit1, $crit2, $crit3, $crit4);
     $res = $reviewDao->reviewArticle($reviewId, $reviewRes);
     

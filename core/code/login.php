@@ -6,6 +6,7 @@ This script will fetch login to the system.
 */
     require_once('dao/user_dao.php');
     require_once('classes/Login.class.php');
+    require_once ('utils.php');
 
     $userDao = new UserDao();
 
@@ -24,40 +25,25 @@ This script will fetch login to the system.
         $passwordOk = !empty($password);
         
         if(!$usernameOk) {
-            header('Location: http://localhost/kiv-web/login.php?err=1');
-            die("Chyba při přihlášení...");
+            redirTo('login.php?err='.Errors::BAD_USERNAME_PASSWORD);
         }
         
         if(!$passwordOk) {
-            header('Location: http://localhost/kiv-web/login.php?err=2');
-            die("Chyba při přihlášení...");
+            redirTo('login.php?err='.Errors::BAD_USERNAME_PASSWORD);
         }
         
         // authenticate
         $auth = $userDao->authenticate($username, hash('sha256', $password, false));
         if(!$auth) {
-            header('Location: http://localhost/kiv-web/login.php?err=3');
-            die("Nope...");
+            redirTo('login.php?err='.Errors::BAD_USERNAME_PASSWORD);
         } else {
             // login
             $login = new Login();
             $login->login($username);
-            header('Location: http://localhost/kiv-web/');
-            die('Login successful');
+            redirHome();
         }
         
     } else {
-        header('Location: http://localhost/kiv-web/');
-        die("http://localhost/kiv-web/");
-    }
-
-    /*
-    * Escape strings.
-    */
-    function escapechars($data) {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
+        redirHome();
     }
 ?>

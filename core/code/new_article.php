@@ -25,7 +25,8 @@ if($user == null ||!$user->isAuthor()) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = isset($_POST["title"]) ? escapechars($_POST["title"]) : "";
     $content = isset($_POST["content"]) ? escapechars($_POST["content"]) : "";
-    $created = date("Y-m-d H:i:s"); 
+    $created = date("Y-m-d H:i:s");
+//    $attachment =
     
     // validate
     $titleOk = checkTitle($title);

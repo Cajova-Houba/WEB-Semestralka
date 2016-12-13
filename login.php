@@ -1,3 +1,8 @@
+<?php
+    require_once ('core/code/utils.php');
+?>
+
+
 <!doctype html>
 <html>
 <head>
@@ -41,18 +46,20 @@
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
         </form>
+           <?php
+           if(isset($_GET["err"])) {
+               $err = escapechars($_GET["err"]);
+           }
+           include ('ui/error_panel.php');
+           ?>
        </div>
     </div>
-    
+
+
     <div class="row"></div>
-    <div class="row">
-       <div class="col-xs-6 col-md-4"></div>
-       <div class="col-xs-6 col-md-4">
-           <footer>
-                <p>&copy; 2016 Zdeněk Valeš</p>
-           </footer>
-       </div>
-    </div>
+    <?php
+        include ('ui/footer.php');
+    ?>
 </div>
 
 
