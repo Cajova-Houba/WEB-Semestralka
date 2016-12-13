@@ -267,6 +267,40 @@
             // remove article
             return parent::remove($id);
         }
+
+        /*
+         * Returns articles for author.
+         */
+        function getArticlesForAuthor($authorId) {
+            $query = "SELECT article.id, article.title, article.content, article.created, article.state 
+                      FROM ".Article::TABLE_NAME." LEFT JOIN ".Article::AUTHOR_TABLE_NAME." ON author.article_id=article.id WHERE author.user_id=:authId";
+
+            $db = getConnection();
+            $rows = $this->executeSelectStatement($db, $query, array(":authId" => $authorId));
+            $db = null;
+
+            $articles = [];
+            foreach ($rows as $row) {
+                $a = new Article();
+                $a->fill($row);
+                $articles[] = $a;
+            }
+
+            return $articles;
+        }
+
+        /*
+         * Returns true if the user is article's author.
+         */
+        function isAuthor($articleId, $userId) {
+            $query = "SELECT id FROM ".Article::AUTHOR_TABLE_NAME." WHERE user_id=:uid AND article_id=:aid";
+
+            $db = getConnection();
+            $rows = $this->executeSelectStatement($db, $query, array(":uid" => $userId, ":aid" => $articleId));
+            $db = null;
+
+            return sizeof($rows) > 0;
+        }
     }
 
 ?>

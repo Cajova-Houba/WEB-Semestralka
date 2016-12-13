@@ -23,6 +23,7 @@ $articleDao = new ArticleDao();
 $attachmentDao = new AttachmentDao();
 // no user has to be logged in
 // article must exist and must be PUBLISHED
+// if the article is not published, logged user must be its author
 $userDao = new UserDao();
 $user = null;
 $login = new Login();
@@ -30,10 +31,22 @@ if($login->isUserLogged()) {
     $user = $userDao->getUserByUsername($login->getUsername());
 }
 
-if(!isset($_GET["aId"]) || !$articleDao->isPublished($_GET["aId"])) {
+if(!isset($_GET["aId"])) {
     redirHome();
 }
-$article = $articleDao->get($_GET["aId"]);
+
+$articleId = $_GET["aId"];
+if(!$articleDao->isPublished($_GET["aId"])) {
+    if ($user == null || !$user->isAuthor()) {
+        redirHome();
+    }
+
+    if(!$articleDao->isAuthor($articleId, $user->getId())) {
+        redirHome();
+    }
+}
+
+$article = $articleDao->get($articleId);
 $authors = $articleDao->getAuthorsForArticle($article->getId());
 $authorsStr = authorsToString($authors);
 $attachments = $attachmentDao->getAttachmentsForArticle($article->getId());
