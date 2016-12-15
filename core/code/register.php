@@ -69,7 +69,7 @@ This script will fetch a new user registration.
         // redirect
         if($res == 1) {
             //success
-            redirHome();
+            redirTo('index.php?info='.Infos::REG_OK);
         } else {
             header('Location: http://localhost/kiv-web/register.php?err='.Errors::GENERAL_ERROR);
             die('Chyba při registraci, zkuste to znovu...');

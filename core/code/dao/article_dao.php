@@ -267,7 +267,7 @@
             $rDao = new ReviewDao();
             $rIds = $this->executeSelectStatement($db, $reviewResqQ, array(":aid" => $id));
             foreach ($rIds as $rid) {
-                $rDao->remove($rid);
+                $rDao->remove($rid["id"]);
             }
             $rDao = null;
             $db = null;

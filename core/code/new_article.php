@@ -56,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // aid is set => editing existing article
         $aid = escapechars($_POST["aid"]);
         if(!$articleDao->isAuthor($aid, $user->getId())) {
+            echo "Not author.";
             redirHome();
         }
 
@@ -65,6 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $articleId = $articleDao->updateArticle($article);
         if ($articleId == 0) {
             /*error*/
+            echo "Article not saved";
             redirHome();
         } else {
             $articleId = $aid;
@@ -82,13 +84,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if($articleId == 0) {
         /*error*/
-//        echo("Error");
+        echo("Error");
         redirHome();
     } else {
         /*success*/
 
         /* save the attachment */
-        if($attachment != null) {
+        if($attachment != null && !empty($attachment["name"])) {
             // remove the previous article
             if($aid != null) {
                 $attachmentDao->removeByArticle($aid);
@@ -99,15 +101,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if($res != 1) {
                 /*error => remove article */
 
-//                echo "Error while saving the file";
+                echo "Error while saving the file";
                 $articleDao->remove($articleId);
+                var_dump($_FILES);
+                var_dump($_POST);
             }
         } else {
-//            echo "file is null.";
-//            var_dump($_FILES);
-//            var_dump($_POST);
+            echo "file is null.";
+            var_dump($_FILES);
+            var_dump($_POST);
         }
-//        echo("Success");
+        echo("Success");
         redirHome();
     }
 

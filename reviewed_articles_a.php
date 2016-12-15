@@ -76,6 +76,13 @@ include('ui/navbar.php');
 
     <div class="col-xs-12 col-sm-9">
         <h1>Hodnocené články</h1>
+            <b>Legenda:</b>
+            <ul>
+                <li>c1 = Obsah</li>
+                <li>c2 = Forma</li>
+                <li>c3 = Originalita</li>
+                <li>c4 = Osobní názor</li>
+            </ul>
             <table class="table">
                 <thead>
                     <tr>
@@ -116,8 +123,7 @@ include('ui/navbar.php');
                             $article = $reviewedArticle["article"];
                             $authors = $articleDao->getAuthorsForArticle($article->getId());
 
-                            // review result 1 is always set.
-                            $reviewResult1 = $reviewedArticle["reviewResult1"];
+                            $reviewResult1 = isset($reviewedArticle["reviewResult1"]) ? $reviewedArticle["reviewResult1"] : ReviewResult::newResult('-','-','-','-');
                             $reviewResult2 = isset($reviewedArticle["reviewResult2"]) ? $reviewedArticle["reviewResult2"] : ReviewResult::newResult('-','-','-','-');
                             $reviewResult3 = isset($reviewedArticle["reviewResult3"]) ? $reviewedArticle["reviewResult3"] : ReviewResult::newResult('-','-','-','-');
                             $authorsStr = authorsToString($authors);

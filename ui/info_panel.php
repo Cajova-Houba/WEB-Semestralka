@@ -6,12 +6,16 @@
  * $info variable has to be set.
  */
 
-if (isset($err)) {
-    $infoMsg = "Info";
-?>
-    <div class="alert alert-info">
-        <?php echo escapechars($infoMsg); ?>
-    </div>
-<?php
+if (isset($info)) {
+    $infoMsg = Infos::getInfoMessage($info);
+    if (!empty($infoMsg)) {
+        ?>
+        <div cla="row">
+        <div class="alert alert-info">
+            <?php echo escapechars($infoMsg); ?>
+        </div>
+        </div>
+        <?php
+    }
 }
 ?>

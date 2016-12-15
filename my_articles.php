@@ -129,10 +129,10 @@ include('ui/navbar.php');
 
                 <div class="panel-footer" style="overflow:hidden;">
                     <div style="float:left;">
-                        <?php
+                        Autoři: <?php
                         echo escapechars($authorsStr); ?>
                     </div>
-                    <div class="text-right"><?php echo $article->getCreated(); ?></div>
+                    <div class="text-right">Vytvořeno: <?php echo formatDate($article->getCreated()); ?></div>
                 </div>
             </div>
             <?php

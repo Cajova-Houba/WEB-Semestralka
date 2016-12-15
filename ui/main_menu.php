@@ -26,11 +26,11 @@
         <?php
           if(isset($activeMenuItem) && $activeMenuItem == 1) {
         ?>
-            <a href="#" class="list-group-item active">Témata konference</a>
+           <!-- <a href="#" class="list-group-item active">Témata konference</a>-->
         <?php
           } else {
         ?>
-            <a href="#" class="list-group-item">Témata konference</a>
+           <!-- <a href="#" class="list-group-item">Témata konference</a>-->
         <?php
           }
         ?>
@@ -38,11 +38,11 @@
         <?php
           if(isset($activeMenuItem) && $activeMenuItem == 2) {
         ?>
-            <a href="#" class="list-group-item active">Organizace</a>
+            <a href="organizace.php" class="list-group-item active">Organizace</a>
         <?php
           } else {
         ?>
-            <a href="#" class="list-group-item">Organizace</a>   
+            <a href="organizace.php" class="list-group-item">Organizace</a>
         <?php
           }
         ?>

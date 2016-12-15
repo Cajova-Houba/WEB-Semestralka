@@ -3,7 +3,6 @@ require_once('vendor/autoload.php');
 use Tracy\Debugger;
 
 Debugger::enable();
-require_once ('core/code/utils.php');
 require_once('core/code/dao/user_dao.php');
 require_once('core/code/classes/Login.class.php');
 
@@ -50,48 +49,43 @@ if ($login->isUserLogged()) {
 /* this script will choose the correct navbar */
 include('ui/navbar.php');
 ?>
-<?php
-if(isset($_GET["info"])) {
-    $info = $_GET["info"];
-}
-include('ui/info_panel.php');
-?>
 
 <div class="container">
 
     <?php
-        include('ui/logo.php');
+    include('ui/logo.php');
     ?>
 
     <div class="col-xs-12 col-sm-9">
-        <h1>Konference New World Technologies</h1>
+        <h1>Organizační detaily</h1>
         <p>
-            Vítejte na webu konference NWT. Na letošním ročníku budou představy poslední novinky a trendy v informačních technologiích.
-            Jedním z nejočekávanějších bude nový open source operační systém dosud neznámého amerického studenta Gilla Batese. Oproti tomu
-            předvede novou verzi svého operačního systému i počítačový gigant Linux Corp v čele s Tinusem Lorvaldsem.
+            Konference je veřejná a každý se může zůčastnit - pokud ještě nemáte účet, registrujte se <a href="register.php">zde</a>.
+        </p>
+        <p>
+            Konferenci je možno navštívit v nové budově FAV v areálu Západočeské Univerzity v Plzni na Borech - konferenční sály US 207 a US 217.
+            Jednotlivé přednášky a prezentace budou probíhat ve dnech 15. 12. až 21. 12. 2016 v čase od 9:00 do 16:00. V areálu ZČU bude možné navštívit několik
+            workshopů organizovaných jak hostujícími firmami, tak samotnou univerzitou.
         </p>
 
-        <p>
-            Mimo to se dočkáme i několika technických novinek, například nová verze diskety s pamětí 1 GB, HDD speciálně navržený pro swapování, který
-            nahrazuje příliš pomalé RAM.
-        </p>
 
-        <h2>Hlavní organizátoři konference:</h2>
+        <h2>Organizátoři konference:</h2>
         <ul>
             <li>Zdeněk Valeš - zdenek.vales@kiv-web.cz</li>
             <li>ZČU/KIV - zastupce.kiv@kiv-web.cz</li>
+            <li>CIV - zastupce.civ@kiv-web.cz</li>
+            <li>Gill Bates - gill.bates@kiv-web.cz</li>
         </ul>
 
-        <h2>Hlavní sponzoři konference:</h2>
+        <h2>Oficiální kontakt</h2>
         <ul>
-            <li>Linux Corp</li>
-            <li>MBI</li>
-            <li>Západočeská Univerzita v Plzni</li>
+            <li>Telefon: +420 123 456 789</li>
+            <li>Email: ofic.email@kiv-web.cz</li>
+            <li>Email pro dotazy a připomínky: pripominky@kiv-web.cz</li>
         </ul>
     </div>
 
     <?php
-    $activeMenuItem = 0;
+    $activeMenuItem = 2;
     include('ui/main_menu.php');
     ?>
 

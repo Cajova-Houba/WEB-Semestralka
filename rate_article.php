@@ -39,6 +39,9 @@ if($article == null) {
     redirHome();
 }
 
+$authors = $articleDao->getAuthorsForArticle($article->getId());
+$authorsStr = authorsToString($authors);
+
 ?>
 <!doctype html>
 
@@ -100,7 +103,7 @@ if($article == null) {
 			    
 			    <div class="panel-footer" style="overflow:hidden">
                     <div style="float:left">
-                        Authors: 
+                        Authors: <?php echo escapechars($authorsStr);?>
                     </div>
                     <div class="text-right">
                         <?php
@@ -114,25 +117,25 @@ if($article == null) {
                 <form method="post" action="core/code/rate_article.php" class="form-horizontal">
                     <h3>Hodnocení:</h3>
                     <div class="form-group">
-                        <label for="c1" class="col-sm-6 control-label">Kritérium 1: </label>
+                        <label for="c1" class="col-sm-6 control-label">Obsah: </label>
                         <div class="col-sm-6">
                             <input type="number" min="0" max="10" class="form-control" id="c1" name="c1" value="5">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="c2" class="col-sm-6 control-label">Kritérium 2: </label>
+                        <label for="c2" class="col-sm-6 control-label">Forma: </label>
                         <div class="col-sm-6">
                             <input type="number" min="0" max="10" class="form-control" id="c2" name="c2" value="5">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="c3" class="col-sm-6 control-label">Kritérium 3: </label>
+                        <label for="c3" class="col-sm-6 control-label">Originalita: </label>
                         <div class="col-sm-6">
                             <input type="number" min="0" max="10" class="form-control" id="c3" name="c3" value="5">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="c4" class="col-sm-6 control-label">Kritérium 4: </label>
+                        <label for="c4" class="col-sm-6 control-label">Osobní názor: </label>
                         <div class="col-sm-6">
                             <input type="number" min="0" max="10" class="form-control" id="c4" name="c4" value="5">
                         </div>

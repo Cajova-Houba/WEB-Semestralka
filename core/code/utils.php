@@ -5,6 +5,21 @@
 Some basic utils.
 
 */
+
+class Infos {
+    const REG_OK = 1;
+
+    static function getInfoMessage($infoCode) {
+        switch ($infoCode) {
+            case Infos::REG_OK:
+                return "Registrace proběhla v pořádku.";
+                break;
+            default:
+                return "";
+                break;
+        }
+    }
+}
     /*
         ERRORS
         - it doesn't have to be in separate class, but the code will be more readable.
@@ -140,7 +155,11 @@ class Errors {
 
         return $authorsStr;
     }
-    
+
+    function formatDate($dateStr) {
+        return date_format(date_create($dateStr), "d.m. Y");
+    }
+
     /*
     * Escape strings.
     */

@@ -53,13 +53,13 @@ if($login->isUserLogged()) {
         include('ui/navbar.php');
     ?>
 	<div class="container">
-		
-		<div class="row col-xs-12">
-			FAKT VELKÝ LOGO
-		</div>
+
+        <?php
+        include('ui/logo.php');
+        ?>
 		
 		<div class="col-xs-12 col-sm-9">
-			<h1>Seznam příspěvků konference</h1>
+			<h1>Publikované příspěvky</h1>
 			<?php
                 /* list all published articles and their authors */
                 $articles = $articleDao->getPublished();
@@ -85,10 +85,10 @@ if($login->isUserLogged()) {
 
                         <div class="panel-footer" style="overflow:hidden;">
                             <div style="float:left;">
-                               <?php
+                                Autoři: <?php
                                 echo escapechars($authorsStr); ?>
                             </div>
-                            <div class="text-right"><?php echo $article->getCreated(); ?></div>
+                            <div class="text-right">Vytvořeno: <?php echo formatDate($article->getCreated()) ?></div>
                         </div>
                     </div>
             <?php

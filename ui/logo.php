@@ -5,5 +5,8 @@
 ?>
 
 <div class="row col-xs-12">
-    FAKT VELKÝ LOGO
+    <div class="jumbotron">
+        <h1>New World Technologies 2016</h1>
+        <p>Konference o novinkách a trendech v informačních technologiích.</p>
+    </div>
 </div>
