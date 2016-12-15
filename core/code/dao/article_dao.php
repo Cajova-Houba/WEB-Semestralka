@@ -6,13 +6,12 @@
     require_once ('base_dao.php');
     require_once ('attachment_dao.php');
     require_once ('user_dao.php');
+    require_once ('review_dao.php');
     if(!defined('__CORE_ROOT__')) {
         //get one dir up - use it when require_once classes
         define('__CORE_ROOT__', dirname(dirname(__FILE__))); 
     }
     require_once (__CORE_ROOT__.'/classes/Article.class.php');
-    require_once (__CORE_ROOT__.'/classes/User.class.php');
-    require_once (__CORE_ROOT__.'/classes/Review.class.php');
     
     class ArticleDao extends BaseDao {
         
@@ -248,21 +247,30 @@
         }
 
         /*
-         * Removes the article and its authors and attachments.
+         * Removes the article and its authors, attachments and reviews.
          */
         function remove($id)
         {
             $remAuthorsQ = "DELETE FROM ".Article::AUTHOR_TABLE_NAME." WHERE article_id=:aid";
+            $reviewResqQ = "SELECT id FROM ".Review::TABLE_NAME." WHERE article_id=:aid";
 
             // remove authors
             $db = getConnection();
             $this->executeModifyStatement($db, $remAuthorsQ, array(":aid" => $id));
-            $db = null;
 
             // remove attachments
             $atDao = new AttachmentDao();
             $atDao->removeByArticle($id);
             $atDao = null;
+
+            // remove review and its reviews
+            $rDao = new ReviewDao();
+            $rIds = $this->executeSelectStatement($db, $reviewResqQ, array(":aid" => $id));
+            foreach ($rIds as $rid) {
+                $rDao->remove($rid);
+            }
+            $rDao = null;
+            $db = null;
 
             // remove article
             return parent::remove($id);
@@ -300,6 +308,36 @@
             $db = null;
 
             return sizeof($rows) > 0;
+        }
+
+        /*
+         * Returns true if the user can delete article.
+         * User must be author of an article to delete it.
+         * Article can't be published.
+         */
+        function canDelete($userId, $articleId) {
+            $query = "SELECT id FROM ".Article::AUTHOR_TABLE_NAME." WHERE user_id=:uid AND article_id=:aid";
+
+            $db = getConnection();
+            $rows = $this->executeSelectStatement($db, $query, array(":uid" => $userId, ":aid" => $articleId));
+            $db = null;
+
+            $a = $this->get($articleId);
+            if($a == null) {
+                return false;
+            }
+
+            return sizeof($rows) > 0 && !$a->isPublished();
+        }
+
+        function updateArticle($article) {
+            $query = "UPDATE ".Article::TABLE_NAME." SET title=:t, content=:c WHERE id=:id";
+
+            $db = getConnection();
+            $rowCount = $this->executeModifyStatement($db, $query, array(":t"=>$article->getTitle(), ":c" => $article->getContent(), ":id" => $article->getId()));
+            $db = null;
+
+            return $rowCount;
         }
     }
 

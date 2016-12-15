@@ -133,7 +133,7 @@ class Review extends BaseObject {
         Returns true is the review object has a review result assigned.
     */
     function isReviewed() {
-        return $reviewResultId != null;
+        return $this->reviewResultId != null;
     }
     
 }

@@ -6,6 +6,9 @@
 require_once ('core/code/dao/attachment_dao.php');
 require_once ('core/code/dao/article_dao.php');
 require_once ('core/code/utils.php');
+require_once ('core/code/dao/attachment_dao.php');
+require_once ('core/code/dao/user_dao.php');
+require_once ('core/code/classes/Login.class.php');
 
 if(!isset($_GET["fid"])) {
     redirHome();
@@ -22,8 +25,20 @@ if(!$attachmentDao->exists($fid)) {
 $attachment = $attachmentDao->get($fid);
 
 // check that the article has been already published
+// only author can download the attachment of an unpublished article
 if (!$articleDao->isPublished($attachment->getArticleId())) {
-    redirHome();
+    $login = new Login();
+    $userDao = new UserDao();
+
+    if($login->isUserLogged()) {
+        $user = $userDao->getUserByUsername($login->getUsername());
+    } else {
+        redirHome();
+    }
+
+    if(!$articleDao->isAuthor($attachment->getArticleId(), $user->getId())) {
+        redirHome();
+    }
 }
 
 $file = $attachment->getPath().$attachment->getName();

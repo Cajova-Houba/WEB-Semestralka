@@ -95,7 +95,10 @@ class Article extends BaseObject {
     function setAuthors($authors) {
         $this->authors = $authors;
     }
-    
+
+    function isPublished() {
+        return $this->state === ArticleState::PUBLISHED;
+    }
     
 }
 

@@ -120,7 +120,27 @@ include('ui/navbar.php');
             <div class="text-right">Vytvořeno: <?php echo $article->getCreated(); ?></div>
         </div>
 
+        <?php
+            if($login->isUserLogged() && $user->isAuthor() && $articleDao->isAuthor($articleId, $user->getId())) {
 
+                ?>
+                <form method="post" action="core/code/edit_article.php">
+                    <?php
+                    $disabled = $article->isPublished() ? "disabled" : "";
+                    ?>
+                    <div class="btn-group">
+                        <input type="hidden" name="aid" value="<?php echo escapechars($article->getId()) ?>">
+                        <button type="submit" class="btn btn-danger" name="action"
+                                value="delete" <?php echo $disabled ?>>Smazat
+                        </button>
+                        <button type="submit" class="btn btn-warning" name="action"
+                                value="edit" <?php echo $disabled ?>>Upravit
+                        </button>
+                    </div>
+                </form>
+                <?php
+            }
+        ?>
     </div>
 
     <?php

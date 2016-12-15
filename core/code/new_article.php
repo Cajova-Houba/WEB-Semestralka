@@ -2,6 +2,7 @@
 /*
 
 This script will fetch the creation of the new article.
+Also editing an existing one.
 
 */
 require_once('dao/article_dao.php');
@@ -48,17 +49,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if($attachment["size"] > 500000) {
         redirTo("new_article.php?err=".Errors::FILE_NOT_OK);
     }
-    
-    // save the article
-    $article = new Article();
-    $article->setTitle($title);
-    $article->setContent($content);
-    $article->setCreated($created);
-    $authors = [];
-    $authors[] = $user->getId();
-    $article->setAuthors($authors);
 
-    $articleId = $articleDao->newArticle($article);
+    // save the article
+    $aid = null;
+    if(isset($_POST["aid"])) {
+        // aid is set => editing existing article
+        $aid = escapechars($_POST["aid"]);
+        if(!$articleDao->isAuthor($aid, $user->getId())) {
+            redirHome();
+        }
+
+        $article = $articleDao->get($aid);
+        $article->setTitle($title);
+        $article->setContent($content);
+        $articleId = $articleDao->updateArticle($article);
+        if ($articleId == 0) {
+            /*error*/
+            redirHome();
+        } else {
+            $articleId = $aid;
+        }
+    } else {
+        $article = new Article();
+        $article->setTitle($title);
+        $article->setContent($content);
+        $article->setCreated($created);
+        $authors = [];
+        $authors[] = $user->getId();
+        $article->setAuthors($authors);
+        $articleId = $articleDao->newArticle($article);
+    }
+
     if($articleId == 0) {
         /*error*/
 //        echo("Error");
@@ -68,6 +89,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         /* save the attachment */
         if($attachment != null) {
+            // remove the previous article
+            if($aid != null) {
+                $attachmentDao->removeByArticle($aid);
+            }
+
+            // save the new attachment
             $res = $attachmentDao->saveFile($attachment, $articleId);
             if($res != 1) {
                 /*error => remove article */
@@ -83,6 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //        echo("Success");
         redirHome();
     }
+
 } else {
     redirHome();
 }

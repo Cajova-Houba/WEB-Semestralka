@@ -6,21 +6,35 @@ Debugger::enable();
 require_once('core/code/dao/user_dao.php');
 require_once('core/code/classes/Login.class.php');
 require_once('core/code/utils.php');
+require_once('core/code/dao/article_dao.php');
 
 
 // is user logged in
 $user = null;
 $userDao = new UserDao();
 $login = new Login();
+$articleDao = new ArticleDao();
 // user has to be an author to access this page
 if($login->isUserLogged()) {
     $user = $userDao->getUserByUsername($login->getUsername());
 }   
 
 if($user == null || !$user->isAuthor()) {
-    header('Location: http://localhost/kiv-web/');
-    die('http://localhost/kiv-web/');
+    redirHome();
 }
+
+//if the aid is specified, author can edit his articles
+$article = null;
+if(isset($_GET["aid"])) {
+    $aid = escapechars($_GET["aid"]);
+
+    // if the user isn't author, or the article has been already published
+    // editing is not possible
+    if($articleDao->isAuthor($aid, $user->getId()) && !$articleDao->isPublished($aid)) {
+        $article = $articleDao->get($aid);
+    }
+}
+
 
 ?>
 
@@ -69,16 +83,33 @@ if($user == null || !$user->isAuthor()) {
 		</div>
 		
 		<div class="col-xs-12 col-sm-9">
-			<h1>Nový článek</h1>
+            <?php
+                if($article == null) {
+                    echo "<h1>Nový článek</h1>";
+                    $title = "";
+                    $content = "";
+                } else {
+                    echo "<h1>Upravit článek</h1>";
+                    $title = escapechars($article->getTitle());
+                    $content = escapechars($article->getContent());
+                }
+            ?>
 			<form action="core/code/new_article.php" method="post" id="art_form" enctype="multipart/form-data">
+                <?php
+                    if($article != null) {
+                ?>
+                        <input type="hidden" name="aid" value="<?php echo escapechars($article->getId())?>">
+                <?php
+                    }
+                ?>
 			    <div class="form-group">
 			        <label for="title">Název</label>
-			        <input type="text" name="title" id="title" class="form-control">
+			        <input type="text" name="title" id="title" class="form-control" value="<?php echo $title?>">
 			    </div>
 			    
                 <div class="form-group">
 			        <label for="content">Článek:</label>
-			        <textarea name="content" id="content" cols="30" rows="10" class="form-control"></textarea>
+			        <textarea name="content" id="content" cols="30" rows="10" class="form-control"><?php echo $content ?></textarea>
                 </div>
 			    
                 <div class="form-group">

@@ -10,6 +10,7 @@ use Tracy\Debugger;
 Debugger::enable();
 require_once('core/code/dao/user_dao.php');
 require_once('core/code/dao/article_dao.php');
+require_once('core/code/dao/review_dao.php');
 require_once('core/code/classes/Login.class.php');
 require_once ('core/code/utils.php');
 
@@ -17,6 +18,7 @@ require_once ('core/code/utils.php');
 // user must be logged in and must be author
 $userDao = new UserDao();
 $articleDao = new ArticleDao();
+$reviewDao = new ReviewDao();
 $user = null;
 $login = new Login();
 if($login->isUserLogged()) {
@@ -70,7 +72,7 @@ include('ui/navbar.php');
     </div>
 
     <div class="col-xs-12 col-sm-9">
-        <h1>Seznam příspěvků konference</h1>
+        <h1>Moje články</h1>
         <?php
         /* list all published articles and their authors */
         $articles = $articleDao->getArticlesForAuthor($user->getId());
@@ -84,14 +86,45 @@ include('ui/navbar.php');
 
             // trim the last ';'
             $authorsStr = rtrim($authorsStr, "; ");
+
+            //prepare the review object if needed
+            if($article->getState() === ArticleState::TO_BE_REVIEWED || $article->getState() === ArticleState::REVIEWED) {
+                $reviewResults = $reviewDao->getReviewsForArticle($article->getId());
+
+                // initialize the review object with empty values
+                $review = array(1 => array('-','-','-','-'),
+                                2 => array('-','-','-','-'),
+                                3 => array('-','-','-','-'));
+
+                // fill the array with actuall review results
+                for ($i = 0; $i < sizeof($reviewResults); $i++) {
+                    if(!$reviewResults[$i]->isReviewed()) {
+                        continue;
+                    }
+
+                    $revRes = $reviewDao->getReviewResult($reviewResults[$i]->getReviewResultId());
+                    $review[$i+1]  = array(
+                            $revRes->getCrit1(),
+                            $revRes->getCrit2(),
+                            $revRes->getCrit3(),
+                            $revRes->getCrit4()
+                    );
+                }
+            }
             ?>
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-heading">
                     <h4>
                         <a href="display_article.php?aId=<?php echo escapechars($article->getId());?>">
                             <?php echo escapechars($article->getTitle()); ?>
                         </a>
                     </h4>
+                </div>
+
+                <div class="panel-body">
+                    <?php
+                        include('ui/article_info_author.php');
+                    ?>
                 </div>
 
                 <div class="panel-footer" style="overflow:hidden;">

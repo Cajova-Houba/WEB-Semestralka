@@ -82,15 +82,13 @@ class ReviewDao extends BaseDao {
     */
     function getArticlesToReview($reviewerId) {
         $query = "SELECT article.title, review.id, review.article_id, review.reviewer_id, review.assigned_by_id, review.review_result_id 
-                  FROM review LEFT JOIN article ON review.article_id=article.id WHERE review.reviewer_id=:reviewerId AND review.review_result_id IS NULL";
+                  FROM review LEFT JOIN article ON review.article_id=article.id WHERE review.reviewer_id=:reviewerId AND (review.review_result_id IS NULL OR article.state = :rejState)";
         
         $res = [];
         
         $db = getConnection();
-        
-        $stmt = $db->prepare($query);
-        $stmt->execute(array("reviewerId" => $reviewerId));
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $rows = $this->executeSelectStatement($db, $query, array(":reviewerId" => $reviewerId, ":rejState" => ArticleState::REJECTED));
         foreach($rows as $row) {
             $article = new Article();
             $article->setTitle($row["title"]);
@@ -110,24 +108,21 @@ class ReviewDao extends BaseDao {
     
     /*
         Saves a review result of article.
-        
+        Changes the state of article to 'REVIEWED'
+
         returns 0 if error occurs and 1 if everything is ok.
     */
     function reviewArticle($reviewId, $reviewResult) {
         $query = "INSERT INTO ".ReviewResult::TABLE_NAME."(id,crit_1,crit_2,crit_3,crit_4) VALUES(:id,:c1,:c2,:c3,:c4)";
-        
+        $changeStateQ = "UPDATE ".Article::TABLE_NAME." SET state=:state WHERE id IN (SELECT article_id FROM ".Review::TABLE_NAME." WHERE id=:revId)";
+
         $db = getConnection();
-        
-        
-        
         $db->beginTransaction();
         
         //first, get the review_result highest id
         $id = null;
         $maxIdQ = "SELECT MAX(id) AS max FROM ".ReviewResult::TABLE_NAME;
-        $stmt = $db->prepare($maxIdQ);
-        $stmt->execute();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $this->executeSelectStatement($db, $maxIdQ, array());
         foreach ($rows as $row) {
             $id = $row["max"];
         }
@@ -139,32 +134,28 @@ class ReviewDao extends BaseDao {
         }
         
         //second, save the result
-        $stmt = $db->prepare($query);
-        $stmt->execute(array(":id"=>$id,
-                             ":c1"=>$reviewResult->getCrit1(),
-                             ":c2"=>$reviewResult->getCrit2(),
-                             ":c3"=>$reviewResult->getCrit3(),
-                             ":c4"=>$reviewResult->getCrit4(),));
-        $rowCount = $stmt->rowCount();
+        $rowCount = $this->executeModifyStatement($db, $query,array(":id"=>$id,
+                                                ":c1"=>$reviewResult->getCrit1(),
+                                                ":c2"=>$reviewResult->getCrit2(),
+                                                ":c3"=>$reviewResult->getCrit3(),
+                                                ":c4"=>$reviewResult->getCrit4()));
         if($rowCount != 1) {
             $db->rollBack();
             return 0;
         }
-        
+
+        // third, change the article state
+        $this->executeModifyStatement($db, $changeStateQ, array(":state" => ArticleState::REVIEWED, "revId" => $reviewId));
         $db->commit();
         
-        //third update the review row
+        //fourth update the review row
         $query = "UPDATE ".Review::TABLE_NAME." SET review_result_id=:id WHERE id=:reviewId";
-        
-        $stmt = $db->prepare($query);
-        $stmt->execute(array(":id" => $id,
-                             ":reviewId" => $reviewId));
-        $rowCount = $stmt->rowCount();
+        $rowCount = $this->executeModifyStatement($db, $query, array(":id" => $id, ":reviewId" => $reviewId));
         if($rowCount != 1) {
             $db = null;
             return 0;
         }
-        
+
         $db = null;
         
         return 1;
@@ -252,6 +243,7 @@ class ReviewDao extends BaseDao {
 
     /*
      * Returns Review objects for article.
+     *
      */
     function getReviewsForArticle($articleId) {
         $query = "SELECT * FROM ".Review::TABLE_NAME." WHERE article_id=:artId AND review_result_id is not null";
@@ -268,6 +260,39 @@ class ReviewDao extends BaseDao {
         }
 
         return $reviews;
+    }
+
+    function getReviewResult($revResId) {
+        $query = "SELECT * FROM ".ReviewResult::TABLE_NAME." WHERE id=:revResId";
+
+        $db = getConnection();
+
+        $rr = null;
+        $rows = $this->executeSelectStatement($db, $query, array(":revResId" => $revResId));
+        foreach ($rows as $row) {
+            $rr = new ReviewResult();
+            $rr->fill($row);
+        }
+        $db = null;
+
+        return $rr;
+    }
+
+    /*
+     * Removes the review and attached review result.
+     */
+    function remove($id)
+    {
+        $review = $this->get($id);
+        if($review == null) {
+            return;
+        }
+
+        $removeRrQ = "DELETE FROM ".ReviewResult::TABLE_NAME." WHERE id=:revResId";
+        $db = getConnection();
+        $this->executeModifyStatement($db, $removeRrQ, array(":revResId" => $review->getReviewResultId()));
+        $db = null;
+        return parent::remove($id); // TODO: Change the autogenerated stub
     }
 }
 

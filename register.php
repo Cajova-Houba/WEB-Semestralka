@@ -52,7 +52,7 @@ Debugger::enable();
                 </div>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-link"><a href="index.php">Cancel</a></button>
+                    <a href="index.php" role="button" class="btn btn-link">Cancel</a>
                     <button type="submit" class="btn btn-primary">Registrovat</button>
                 </div>
             </form>
