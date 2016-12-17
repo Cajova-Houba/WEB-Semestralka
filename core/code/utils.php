@@ -15,7 +15,7 @@ class Infos {
                 return "Registrace proběhla v pořádku.";
                 break;
             default:
-                return "";
+                return null;
                 break;
         }
     }
@@ -85,7 +85,7 @@ class Errors {
                     break;
 
                 default:
-                    return "Neznámá chyba.";
+                    return null;
                     break;
 
             }
