@@ -24,7 +24,8 @@ $controllersForPages = array(
     'myarticles' => 'MyArticlesPageController',
     'logout' => 'LogoutController',
     'new_article' => 'NewArticlePageController',
-    'edit_article' => 'NewArticlePageController'
+    'edit_article' => 'NewArticlePageController',
+    'download' => 'DownloadFileController'
 );
 
 

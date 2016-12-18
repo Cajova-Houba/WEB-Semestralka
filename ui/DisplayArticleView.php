@@ -64,7 +64,7 @@ class DisplayArticleView extends StandardPageView
             return "
                 <form method=\"post\" action=\"core/code/edit_article.php\">
                     <div class=\"btn-group\">
-                        <input type=\"hidden\" name=\"aid\" value=\"<?php echo escapechars($article->getId()) ?>\">
+                        <input type=\"hidden\" name=\"aid\" value=\"".escapechars($article->getId())."\">
                         <button type=\"submit\" class=\"btn btn-danger\" name=\"action\"
                                 value=\"delete\" ".$disabled.">Smazat
                         </button>
