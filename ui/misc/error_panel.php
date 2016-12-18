@@ -1,16 +1,18 @@
 <?php
 /*
  * If an error occurs, this script will display appropriate panel.
- *
- * $err variable has to be set in order to display the error message.
  */
 
-if (isset($err)) {
-    $errMsg = Errors::getErrorMessage($err);
-?>
-    <div class="alert alert-danger">
-        <?php echo escapechars($errMsg); ?>
-    </div>
-<?php
+require_once ($_SERVER['DOCUMENT_ROOT'].'/kiv-web/core/code/utils.php');
+
+class ErrorPanel {
+
+    static function getHTML($errMsg) {
+        return "
+            <div class=\"alert alert-danger\">
+                ".escapechars($errMsg)."
+            </div>
+        ";
+    }
 }
 ?>

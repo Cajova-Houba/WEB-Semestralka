@@ -30,8 +30,8 @@ class MainMenuView {
                 <div class=\"col-xs-6 col-sm-3 sidebar-offcanvas\" id=\"sidebar\">
                   <div class=\"list-group\">
                         <a href=\"index.php\" class=\"list-group-item ".$activeMenuItems[MainMenuView::O_KONFERENCI_ACTIVE]."\">O konferenci</a>
-                        <a href=\"index.php\" class=\"list-group-item ".$activeMenuItems[MainMenuView::ORGANIZACE_ACTIVE]."\">Organizace</a>
-                        <a href=\"index.php\" class=\"list-group-item ".$activeMenuItems[MainMenuView::PRISPEVKY_ACTIVE]."\">Příspěvky</a>
+                        <a href=\"index.php?web=organizace\" class=\"list-group-item ".$activeMenuItems[MainMenuView::ORGANIZACE_ACTIVE]."\">Organizace</a>
+                        <a href=\"index.php?web=articles\" class=\"list-group-item ".$activeMenuItems[MainMenuView::PRISPEVKY_ACTIVE]."\">Příspěvky</a>
                   </div>
                 </div><!--/.sidebar-offcanvas-->
             </div>

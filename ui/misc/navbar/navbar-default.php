@@ -21,7 +21,7 @@ class NavbarDefaultView {
                         </button>
             
                         <span class=\"navbar-brand\">
-                            <a href=\"login.php\">
+                            <a href=\"index.php?web=login\">
                                 Login
                             </a>
                         </span>

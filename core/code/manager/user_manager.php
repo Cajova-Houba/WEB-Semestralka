@@ -12,7 +12,7 @@ class UserManager extends BaseManager {
 
     private $userDao;
 
-    function __construct($dao)
+    function __construct()
     {
         $this->userDao = new UserDao();
         parent::__construct($this->userDao);
