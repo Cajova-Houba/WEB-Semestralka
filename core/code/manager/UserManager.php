@@ -3,9 +3,9 @@
 /**
  * Manager for users and authentication.
  */
-require_once (dirname(dirname(__FILE__)).'/dao/user_dao.php');
+require_once(dirname(dirname(__FILE__)) . '/dao/UserDao.php');
 require_once (dirname(dirname(__FILE__)).'/classes/Login.class.php');
-require_once ('base_manager.php');
+require_once('BaseManager.php');
 
 
 class UserManager extends BaseManager {

@@ -5,7 +5,7 @@
 
 require_once ($_SERVER['DOCUMENT_ROOT'].'/kiv-web/core/code/utils.php');
 
-class ErrorPanel {
+class ErrorView {
 
     static function getHTML($errMsg) {
         return "

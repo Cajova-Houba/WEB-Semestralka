@@ -6,9 +6,9 @@ require_once('vendor/autoload.php');
 use Tracy\Debugger;
 
 Debugger::enable();
-require_once('core/code/dao/user_dao.php');
+require_once('core/code/dao/UserDao.php');
 require_once('core/code/classes/Login.class.php');
-require_once('core/code/dao/article_dao.php');
+require_once('core/code/dao/ArticleDao.php');
 
 
 $articleDao = new ArticleDao();
@@ -56,13 +56,13 @@ if(!$user->isAdmin()) {
 
 <?php
 /* this script will choose the correct navbar */
-include('ui/navbar.php');
+include('ui/NavbarView.php');
 ?>
 
 <div class="container">
 
     <?php
-        include ('ui/logo.php');
+        include ('ui/LogoView.php');
     ?>
 
     <div class="col-xs-12 col-sm-9">
@@ -156,7 +156,7 @@ include('ui/navbar.php');
     </div>
 
     <?php
-    include('ui/main_menu.php');
+    include('ui/MainMenuView.php');
     ?>
 
     <footer>

@@ -1,6 +1,6 @@
 <?php
 require_once ('core/code/utils.php');
-require_once ('ui/login_page.php');
+require_once('ui/LoginPageView.php');
 
 /**
  * Controller for login page.

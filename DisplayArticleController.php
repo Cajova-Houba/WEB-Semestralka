@@ -3,13 +3,13 @@
 /**
  * Controller for displaying one artilce.
  */
-require_once ('ui/main_page.php');
-require_once ('ui/misc/navbar.php');
-require_once ('ui/display_article.php');
+require_once('ui/MainPageView.php');
+require_once('ui/misc/NavbarView.php');
+require_once('ui/DisplayArticleView.php');
 
-require_once ('core/code/manager/user_manager.php');
-require_once ('core/code/dao/article_dao.php');
-require_once ('core/code/dao/attachment_dao.php');
+require_once('core/code/manager/UserManager.php');
+require_once('core/code/dao/ArticleDao.php');
+require_once('core/code/dao/AttachmentDao.php');
 require_once ('core/code/utils.php');
 
 class DisplayArticleController

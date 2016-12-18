@@ -50,7 +50,7 @@
            if(isset($_GET["err"])) {
                $err = escapechars($_GET["err"]);
            }
-           include ('ui/error_panel.php');
+           include ('ui/ErrorView.php');
            ?>
        </div>
     </div>
@@ -58,7 +58,7 @@
 
     <div class="row"></div>
     <?php
-        include ('ui/footer.php');
+        include ('ui/FooterView.php');
     ?>
 </div>
 

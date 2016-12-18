@@ -1,6 +1,6 @@
 <?php
 require_once ('db_connector.php');
-require_once ('base_dao.php');
+require_once('BaseDao.php');
 if(!defined('__CORE_ROOT__')) {
     //get one dir up - use it when require_once classes
     define('__CORE_ROOT__', dirname(dirname(__FILE__)));

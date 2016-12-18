@@ -3,11 +3,11 @@
  * This file will fetch downloading a file.
  * fid get parameter specifies the file id.
  */
-require_once ('core/code/dao/attachment_dao.php');
-require_once ('core/code/dao/article_dao.php');
+require_once('core/code/dao/AttachmentDao.php');
+require_once('core/code/dao/ArticleDao.php');
 require_once ('core/code/utils.php');
-require_once ('core/code/dao/attachment_dao.php');
-require_once ('core/code/dao/user_dao.php');
+require_once('core/code/dao/AttachmentDao.php');
+require_once('core/code/dao/UserDao.php');
 require_once ('core/code/classes/Login.class.php');
 
 if(!isset($_GET["fid"])) {

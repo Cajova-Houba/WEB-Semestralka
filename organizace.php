@@ -3,7 +3,7 @@ require_once('vendor/autoload.php');
 use Tracy\Debugger;
 
 Debugger::enable();
-require_once('core/code/dao/user_dao.php');
+require_once('core/code/dao/UserDao.php');
 require_once('core/code/classes/Login.class.php');
 
 
@@ -47,13 +47,13 @@ if ($login->isUserLogged()) {
 
 <?php
 /* this script will choose the correct navbar */
-include('ui/navbar.php');
+include('ui/NavbarView.php');
 ?>
 
 <div class="container">
 
     <?php
-    include('ui/logo.php');
+    include('ui/LogoView.php');
     ?>
 
     <div class="col-xs-12 col-sm-9">
@@ -86,7 +86,7 @@ include('ui/navbar.php');
 
     <?php
     $activeMenuItem = 2;
-    include('ui/main_menu.php');
+    include('ui/MainMenuView.php');
     ?>
 
     <footer>

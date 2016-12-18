@@ -2,9 +2,9 @@
 /*
  * This script will fetch publishing a reviewed article.
  */
-require_once ('dao/user_dao.php');
-require_once ('dao/review_dao.php');
-require_once ('dao/article_dao.php');
+require_once('dao/UserDao.php');
+require_once('dao/ReviewDao.php');
+require_once('dao/ArticleDao.php');
 require_once ('utils.php');
 require_once ('classes/Login.class.php');
 

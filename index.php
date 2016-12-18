@@ -8,12 +8,8 @@ require_once('vendor/autoload.php');
 use Tracy\Debugger;
 
 Debugger::enable();
-require_once ('main_page_controller.php');
-require_once ('articles_page_controller.php');
-require_once ('display_article_controller.php');
-require_once ('login_page_controller.php');
 
-
+require_once ('core/code/utils.php');
 
 // map a controller to each page
 $controllersForPages = array(
@@ -21,13 +17,15 @@ $controllersForPages = array(
     'organizace' => 'MainPageController',
     'articles' => 'ArticlesPageController',
     'article' => 'DisplayArticleController',
-    'login' => 'LoginPageController'
+    'login' => 'LoginPageController',
+    'register' => 'RegisterPageController'
 );
 
 
 // choose the right controller
 if (isset($_GET["web"]) && array_key_exists($_GET["web"], $controllersForPages)) {
-    $page = $_GET["web"];
+    $page = escapechars($_GET["web"]);
+    require_once ($controllersForPages[$page].'.php');
     $controller = new $controllersForPages[$page];
     echo $controller->getHTML();
 } else {

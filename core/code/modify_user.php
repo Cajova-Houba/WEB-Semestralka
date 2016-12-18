@@ -3,9 +3,9 @@
  * This script will fetch enabling/disabling, deleting and changing the role of the user.
  */
 require_once ('utils.php');
-require_once ('dao/user_dao.php');
+require_once('dao/UserDao.php');
 require_once ('classes/Login.class.php');
-require_once ('dao/role_dao.php');
+require_once('dao/RoleDao.php');
 
 $userDao = new UserDao();
 $roleDao = new RoleDao();

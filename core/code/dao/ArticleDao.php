@@ -3,10 +3,10 @@
     /*
     This file contains methods for database related stuff.
     */
-    require_once ('base_dao.php');
-    require_once ('attachment_dao.php');
-    require_once ('user_dao.php');
-    require_once ('review_dao.php');
+    require_once('BaseDao.php');
+    require_once('AttachmentDao.php');
+    require_once('UserDao.php');
+    require_once('ReviewDao.php');
     if(!defined('__CORE_ROOT__')) {
         //get one dir up - use it when require_once classes
         define('__CORE_ROOT__', dirname(dirname(__FILE__))); 

@@ -4,7 +4,7 @@
 This script will fetch login to the system.
 
 */
-    require_once('dao/user_dao.php');
+    require_once('dao/UserDao.php');
     require_once('classes/Login.class.php');
     require_once ('utils.php');
 

@@ -5,8 +5,8 @@
     This script will fetch saving a new review of an article.
 
 */
-require_once('dao/review_dao.php');
-require_once('dao/user_dao.php');
+require_once('dao/ReviewDao.php');
+require_once('dao/UserDao.php');
 require_once('utils.php');
 require_once('classes/Login.class.php');
 

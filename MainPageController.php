@@ -2,10 +2,10 @@
 /*
  * Controller for page.
  */
-require_once ('ui/main_page.php');
-require_once ('ui/misc/navbar.php');
+require_once('ui/MainPageView.php');
+require_once('ui/misc/NavbarView.php');
 
-require_once ('core/code/manager/user_manager.php');
+require_once('core/code/manager/UserManager.php');
 require_once ('core/code/utils.php');
 
 class MainPageController {

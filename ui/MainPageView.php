@@ -3,12 +3,12 @@
  * A template for main page
  */
 
-require_once ('misc/header.php');
-require_once ('misc/footer.php');
-require_once ('misc/main_menu.php');
-require_once ('misc/navbar.php');
-require_once ('misc/logo.php');
-require_once ('misc/info_panel.php');
+require_once('misc/HeaderView.php');
+require_once('misc/FooterView.php');
+require_once('misc/MainMenuView.php');
+require_once('misc/NavbarView.php');
+require_once('misc/LogoView.php');
+require_once('misc/InfoView.php');
 
 class MainPageView {
 

@@ -5,7 +5,7 @@ This script will fetch a new user registration.
 
 */
 
-    require_once('dao/user_dao.php');
+    require_once('dao/UserDao.php');
     require_once('utils.php');
 
     $userDao = new UserDao();

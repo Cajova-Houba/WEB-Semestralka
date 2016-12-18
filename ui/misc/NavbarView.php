@@ -4,10 +4,10 @@
     A script which will display a correct navbar.
 
 */
-require_once ('navbar/navbar-admin.php');
-require_once ('navbar/navbar-author.php');
-require_once ('navbar/navbar-default.php');
-require_once ('navbar/navbar-reviewer.php');
+require_once('navbar/NavbarAdminView.php');
+require_once('navbar/NavbarAuthorView.php');
+require_once('navbar/NavbarDefaultView.php');
+require_once('navbar/NavbarReviewerView.php');
 
 class NavbarView {
 

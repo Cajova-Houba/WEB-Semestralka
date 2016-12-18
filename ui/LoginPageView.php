@@ -1,8 +1,8 @@
 <?php
 
-require_once ('misc/header.php');
-require_once ('misc/footer.php');
-require_once ('misc/error_panel.php');
+require_once('misc/HeaderView.php');
+require_once('misc/FooterView.php');
+require_once('misc/ErrorView.php');
 
 /**
  * A template for the login page.
@@ -12,7 +12,7 @@ class LoginPageView
     static function getHTML($errMessage) {
         $head = HeaderView::getHTML('Přihlášení');
         $footer = FooterView::getHTML();
-        $errPanel = $errMessage == null ? "" : ErrorPanel::getHTML($errMessage);
+        $errPanel = $errMessage == null ? "" : ErrorView::getHTML($errMessage);
         $content = "
             <div class=\"row\">
                <div class=\"col-xs-6 col-md-4\"></div>

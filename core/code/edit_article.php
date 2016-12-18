@@ -2,8 +2,8 @@
 /*
  * This script will fetch editing/deleting an article
  */
-require_once ('dao/user_dao.php');
-require_once ('dao/article_dao.php');
+require_once('dao/UserDao.php');
+require_once('dao/ArticleDao.php');
 require_once ('utils.php');
 require_once ('classes/Login.class.php');
 
