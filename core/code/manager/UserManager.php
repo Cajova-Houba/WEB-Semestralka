@@ -34,4 +34,14 @@ class UserManager extends BaseManager {
         return $this->userDao->getUserByUsername($username);
     }
 
+    /**
+     * Logs the current user out.
+     */
+    function logout() {
+        $login = new Login();
+        if($login->isUserLogged()) {
+            $login->logout();
+        }
+    }
+
 }

@@ -33,11 +33,6 @@ class ArticlesPageController {
             }
         }
 
-        // check the info parameter
-        if (isset($_GET["info"])) {
-            $this->info = Infos::getInfoMessage($_GET["info"]);
-        }
-
         $this->getPublishedArticles();
     }
 
@@ -57,6 +52,6 @@ class ArticlesPageController {
     }
 
     function getHTML() {
-        return ArticlesPageView::getHTML($this->info, $this->navbar, $this->data);
+        return ArticlesPageView::getHTML("Publikované články", MainMenuView::PRISPEVKY_ACTIVE, $this->navbar, $this->data);
     }
 }

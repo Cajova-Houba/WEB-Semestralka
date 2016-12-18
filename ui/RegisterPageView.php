@@ -18,29 +18,33 @@ class RegisterPageView
         $valid = self::getValidationJs();
 
         $content = "
-            <div class=\"col-xs-6 col-md-4\">
-            <h1>Nový uživatel</h1>
-            <form action=\"core/code/register.php\" method=\"post\" id=\"reg_form\">
-                <div class=\"form-group\">
-                    <label for=\"first_name\">Jméno: </label>
-                    <input type=\"text\" id=\"first_name\" class=\"form-control\" name=\"first_name\">
-                    <label for=\"last_name\">Příjmení: </label>
-                    <input type=\"text\" id=\"last_name\" class=\"form-control\" name=\"last_name\">
-                    <label for=\"username\">Nickaname: </label>
-                    <input type=\"text\" id=\"username\" class=\"form-control\" name=\"username\">
-                    <label for=\"password\">Heslo: </label>
-                    <input type=\"password\" id=\"password\" class=\"form-control\" name=\"password\">
-                    <label for=\"password_check\">Ověření hesla: </label>
-                    <input type=\"password\" id=\"password_check\" class=\"form-control\" name=\"password_check\">
+            <div class=\"container\">
+            <div class=\"row\">
+                <div class=\"col-xs-6 col-md-4\"></div> 
+                <div class=\"col-xs-6 col-md-4\">
+                    <h1>Nový uživatel</h1>
+                    <form action=\"core/code/register.php\" method=\"post\" id=\"reg_form\">
+                        <div class=\"form-group\">
+                            <label for=\"first_name\">Jméno: </label>
+                            <input type=\"text\" id=\"first_name\" class=\"form-control\" name=\"first_name\">
+                            <label for=\"last_name\">Příjmení: </label>
+                            <input type=\"text\" id=\"last_name\" class=\"form-control\" name=\"last_name\">
+                            <label for=\"username\">Nickaname: </label>
+                            <input type=\"text\" id=\"username\" class=\"form-control\" name=\"username\">
+                            <label for=\"password\">Heslo: </label>
+                            <input type=\"password\" id=\"password\" class=\"form-control\" name=\"password\">
+                            <label for=\"password_check\">Ověření hesla: </label>
+                            <input type=\"password\" id=\"password_check\" class=\"form-control\" name=\"password_check\">
+                        </div>
+        
+                        <div class=\"btn-group\">
+                            <a href=\"index.php\" role=\"button\" class=\"btn btn-link\">Cancel</a>
+                            <button type=\"submit\" class=\"btn btn-primary\">Registrovat</button>
+                        </div>
+                    </form>
+                    ".$errStr.$valid."
                 </div>
-
-                <div class=\"btn-group\">
-                    <a href=\"index.php\" role=\"button\" class=\"btn btn-link\">Cancel</a>
-                    <button type=\"submit\" class=\"btn btn-primary\">Registrovat</button>
-                </div>
-            </form>
-            ".$errStr.$valid."
-        </div>
+            </div>
         ";
 
         return $head.$content.$footer;

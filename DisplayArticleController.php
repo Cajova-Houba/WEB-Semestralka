@@ -59,6 +59,6 @@ class DisplayArticleController
     }
 
     function getHTML() {
-        return DisplayArticleView::getHTML($this->navbar, $this->data);
+        return DisplayArticleView::getHTML('Článek', MainMenuView::NOTHING_ACTIVE,$this->navbar, $this->data);
     }
 }

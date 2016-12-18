@@ -141,6 +141,16 @@ class Errors {
         die('http://localhost/kiv-web/'.escapeshellarg($page));
     }
 
+    function redirToPageWithParams($page, $params) {
+        $location = 'Location: http://localhost/kiv-web/index.php?web='.escapechars($page);
+        foreach (array_keys($params) as $paramName) {
+            $location = $location.'&'.escapechars($paramName).'='.escapechars($params[$paramName]);
+        }
+
+        header($location);
+        die($location);
+    }
+
     /*
      * Coverts authors array to string.
      */

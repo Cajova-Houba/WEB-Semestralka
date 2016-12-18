@@ -9,6 +9,7 @@
 class MainMenuView {
 
     // active menu items
+    const NOTHING_ACTIVE = -1;
     const O_KONFERENCI_ACTIVE = 0;
     const ORGANIZACE_ACTIVE = 1;
     const PRISPEVKY_ACTIVE = 3;

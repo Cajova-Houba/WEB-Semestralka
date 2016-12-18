@@ -9,22 +9,16 @@ require_once('misc/MainMenuView.php');
 require_once('misc/NavbarView.php');
 require_once('misc/LogoView.php');
 require_once('misc/InfoView.php');
+require_once ('StandardPageView.php');
 require_once ($_SERVER['DOCUMENT_ROOT'].'/kiv-web/core/code/utils.php');
 
-class ArticlesPageView {
+class ArticlesPageView extends StandardPageView {
 
     /**
      * $data["articles"] with published articles is expected.
      * each $data["articles"] should containt ["authors"] and ["article"]
      */
-    static function getHTML($info, $navbar, $data) {
-        $head = HeaderView::getHTML('Publikované příspěvky');
-        $mainMenu = MainMenuView::getHTML(MainMenuView::PRISPEVKY_ACTIVE);
-        $footer = FooterView::getHTML();
-        $navbar = NavbarView::getHTML($navbar, $data);
-        $logo = LogoView::getHTML();
-        $infoPan = $info == null ? '' : InfoView::getHTML($info);
-
+    protected static  function getContent($data) {
         $articlesStr = "";
         $articles = $data["articles"];
         foreach ($articles as $article) {
@@ -41,7 +35,7 @@ class ArticlesPageView {
                             <div style=\"float:left;\">
                                 Autoři: ".escapechars($authors)."
                             </div>
-                            <div class=\"text - right\">Vytvořeno: ".formatDate($a->getCreated())."</div>
+                            <div class=\"text-right\">Vytvořeno: ".formatDate($a->getCreated())."</div>
                         </div>
                     </div>
                 ";
@@ -54,7 +48,7 @@ class ArticlesPageView {
 		    </div>
         ";
 
-        return $head.$navbar.$infoPan.$logo.$content.$mainMenu.$footer;
+        return $content;
     }
 
 }

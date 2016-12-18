@@ -1,27 +1,18 @@
 <?php
 
-require_once('misc/HeaderView.php');
-require_once('misc/FooterView.php');
 require_once('misc/MainMenuView.php');
-require_once('misc/NavbarView.php');
-require_once('misc/LogoView.php');
-require_once('misc/InfoView.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/kiv-web/core/code/utils.php');
+require_once ('StandardPageView.php');
 
 /**
  * Template for displaying the article.
  */
-class DisplayArticleView
+class DisplayArticleView extends StandardPageView
 {
     /**
      * $data["article"], $data["attachments"], $data["authors"], $data["showEdit"] is expected
      */
-    static function getHTML($navbar, $data) {
-        $head = HeaderView::getHTML('O konferenci');
-        $mainMenu = MainMenuView::getHTML(MainMenuView::O_KONFERENCI_ACTIVE);
-        $footer = FooterView::getHTML();
-        $navbar = NavbarView::getHTML($navbar, $data);
-        $logo = LogoView::getHTML();
-
+    protected static  function getContent($data) {
         $article = $data["article"];
         $attachments = $data["attachments"];
         $authors = $data["authors"];
@@ -54,10 +45,8 @@ class DisplayArticleView
             </div>
         ";
 
-        return $head.$navbar.$logo.$content.$mainMenu.$footer;
+        return $content;
     }
-
-
 
     private static function getAttachmentsStr($attachments) {
         if(sizeof($attachments) > 0) {

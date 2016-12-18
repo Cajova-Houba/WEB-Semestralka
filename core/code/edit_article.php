@@ -39,7 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else if ($action === "edit") {
         // edit article
-        redirTo('new_article.php?aid='.escapechars($articleId));
+        redirToPageWithParams('edit_article', array("aid" => escapechars($articleId)));
     }
 }
 redirHome();

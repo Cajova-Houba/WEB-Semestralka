@@ -25,17 +25,17 @@ This script will fetch login to the system.
         $passwordOk = !empty($password);
         
         if(!$usernameOk) {
-            redirTo('login.php?err='.Errors::BAD_USERNAME_PASSWORD);
+            redirToPageWithParams('login', array("err" => Errors::BAD_USERNAME_PASSWORD));
         }
         
         if(!$passwordOk) {
-            redirTo('login.php?err='.Errors::BAD_USERNAME_PASSWORD);
+            redirToPageWithParams('login', array("err" => Errors::BAD_USERNAME_PASSWORD));
         }
         
         // authenticate
         $auth = $userDao->authenticate($username, hash('sha256', $password, false));
         if(!$auth) {
-            redirTo('login.php?err='.Errors::BAD_USERNAME_PASSWORD);
+            redirToPageWithParams('login', array("err" => Errors::BAD_USERNAME_PASSWORD));
         } else {
             // login
             $login = new Login();

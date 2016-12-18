@@ -37,17 +37,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
      // check for errors
     if(!$titleOk) {
-        header('Location: http://localhost/kiv-web/new_article.php?err='.Errors::TITLE_NOT_OK);
-        die('Chyba při registraci, zkuste to znovu...');
+        redirToPageWithParams('new_article', array("err" => Errors::TITLE_NOT_OK));
     }
     if(!$contentOk) {
-        header('Location: http://localhost/kiv-web/new_article.php?err='.Errors::CONTENT_NOT_OK);
-        die('Chyba při registraci, zkuste to znovu...');
+        redirToPageWithParams('new_article', array("err" => Errors::CONTENT_NOT_OK));
     }
 
     /* file too big */
     if($attachment["size"] > 500000) {
-        redirTo("new_article.php?err=".Errors::FILE_NOT_OK);
+        redirToPageWithParams('new_article', array("err" => Errors::FILE_NOT_OK));
     }
 
     // save the article
@@ -103,13 +101,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 echo "Error while saving the file";
                 $articleDao->remove($articleId);
-                var_dump($_FILES);
-                var_dump($_POST);
+//                var_dump($_FILES);
+//                var_dump($_POST);
             }
         } else {
             echo "file is null.";
-            var_dump($_FILES);
-            var_dump($_POST);
+//            var_dump($_FILES);
+//            var_dump($_POST);
         }
         echo("Success");
         redirHome();

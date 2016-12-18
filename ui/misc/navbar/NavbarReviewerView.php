@@ -35,11 +35,11 @@ class NavbarReviewerView {
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">
                       <ul class=\"nav navbar-nav\">
-                        <li><a href=\"articles_to_review.php\">Nové články</a></li>
+                        <li><a href=\"index.php?web=reviews\">Nové články</a></li>
                         <li><a href=\"reviewed_articles_r.php\">Hodnocené články</a></li>
                       </ul>
                        <ul class=\"nav navbar-nav navbar-right\">
-                          <li><a href=\"logout.php\">Logout</a></li>
+                          <li><a href=\"index.php?web=logout\">Logout</a></li>
                       </ul>
                     </div>
                </div>

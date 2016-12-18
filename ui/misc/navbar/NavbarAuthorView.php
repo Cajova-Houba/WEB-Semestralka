@@ -34,11 +34,11 @@ class NavbarAuthorView {
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">
                       <ul class=\"nav navbar-nav\">
-                        <li><a href=\"new_article.php\">Nový článek</a></li>
-                        <li><a href=\"my_articles.php\">Moje články</a></li>
+                        <li><a href=\"index.php?web=new_article\">Nový článek</a></li>
+                        <li><a href=\"index.php?web=myarticles\">Moje články</a></li>
                       </ul>
                        <ul class=\"nav navbar-nav navbar-right\">
-                          <li><a href=\"logout.php\">Logout</a></li>
+                          <li><a href=\"index.php?web=logout\">Logout</a></li>
                       </ul>
                     </div>
                 </div>

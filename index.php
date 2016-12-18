@@ -18,7 +18,13 @@ $controllersForPages = array(
     'articles' => 'ArticlesPageController',
     'article' => 'DisplayArticleController',
     'login' => 'LoginPageController',
-    'register' => 'RegisterPageController'
+    'register' => 'RegisterPageController',
+    'users' => 'ManageUsersPageController',
+    'reviews' => 'ArticlesToReviewController',
+    'myarticles' => 'MyArticlesPageController',
+    'logout' => 'LogoutController',
+    'new_article' => 'NewArticlePageController',
+    'edit_article' => 'NewArticlePageController'
 );
 
 
@@ -26,12 +32,18 @@ $controllersForPages = array(
 if (isset($_GET["web"]) && array_key_exists($_GET["web"], $controllersForPages)) {
     $page = escapechars($_GET["web"]);
     require_once ($controllersForPages[$page].'.php');
-    $controller = new $controllersForPages[$page];
-    echo $controller->getHTML();
+    if($page == 'organizace') {
+        $controller = new MainPageController(MainPageController::ABOUT_PAGE);
+        echo $controller->getHTML();
+    } else {
+        $controller = new $controllersForPages[$page];
+        echo $controller->getHTML();
+    }
 } else {
 
     // no web -> show main page
-    $mainPageController = new MainPageController();
+    require_once ('MainPageController.php');
+    $mainPageController = new MainPageController(MainPageController::MAIN_PAGE);
     echo $mainPageController->getHTML();
 }
 

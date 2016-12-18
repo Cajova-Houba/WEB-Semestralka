@@ -37,27 +37,22 @@ This script will fetch a new user registration.
         
         // check for errors
         if(!$firstNameOk) {
-            header('Location: http://localhost/kiv-web/register.php?err='.Errors::FIRST_NAME_NOT_OK);
-            die('Chyba při registraci, zkuste to znovu...');
+            redirToPageWithParams('register', array("err" => Errors::FIRST_NAME_NOT_OK));
         }
         if(!$lastNameOk) {
-            header('Location: http://localhost/kiv-web/register.php?err='.Errors::LAST_NAME_NOT_OK);
-            die('Chyba při registraci, zkuste to znovu...');
+            redirToPageWithParams('register', array("err" => Errors::LAST_NAME_NOT_OK));
         }
         if(!$usernameOk) {
-            header('Location: http://localhost/kiv-web/register.php?err='.Errors::USERNAMENAME_NOT_OK);
-            die('Chyba při registraci, zkuste to znovu...');
+            redirToPageWithParams('register', array("err" => Errors::USERNAMENAME_NOT_OK));
         }
         if(!$passwordOk) {
-            header('Location: http://localhost/kiv-web/register.php?err='.Errors::PASSWORD_NOT_OK);
-            die('Chyba při registraci, zkuste to znovu...');
+            redirToPageWithParams('register', array("err" => Errors::PASSWORD_NOT_OK));
         }
         
         // check for duplicities
         $user = $userDao->getUserByUsername($username);
         if($user != null) {
-            header('Location: http://localhost/kiv-web/register.php?err='.Errors::USER_ALREADY_EXISTS);
-            die('Chyba při registraci, zkuste to znovu...');
+            redirToPageWithParams('register', array("err" => Errors::USER_ALREADY_EXISTS));
         }
         
         // save the new user
@@ -69,10 +64,9 @@ This script will fetch a new user registration.
         // redirect
         if($res == 1) {
             //success
-            redirTo('index.php?info='.Infos::REG_OK);
+            redirToPageWithParams('home', array("info" => Infos::REG_OK));
         } else {
-            header('Location: http://localhost/kiv-web/register.php?err='.Errors::GENERAL_ERROR);
-            die('Chyba při registraci, zkuste to znovu...');
+            redirToPageWithParams('register', array("err" => Errors::GENERAL_ERROR));
         }
         
     } else {

@@ -28,7 +28,7 @@ class NavbarDefaultView {
                     </div>
                     <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">
                         <ul class=\"nav navbar-nav\">
-                            <li><a href=\"register.php\">Nový uživatel</a></li>
+                            <li><a href=\"index.php?web=register\">Nový uživatel</a></li>
                         </ul>
                     </div>
               </div><!-- /.container-fluid -->
